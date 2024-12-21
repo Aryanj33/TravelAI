@@ -6,11 +6,58 @@ import logo from '../assets/logo2.png';
 import backkkgg from '../assets/backkkgg.webp';
 import { Link } from "react-router-dom";
 
-
-
-
 const Home = () => {
-  const navigate = useNavigate();
+
+const navigate = useNavigate();
+
+  const handlePlanItineraryClick = async () => {
+      const from = document.querySelector('[name="from"]').value;
+      const destination = document.querySelector('[name="to"]').value;
+      const startDate = document.querySelector('[name="departure"]').value;
+      const endDate = document.querySelector('[name="return"]').value || "N/A";  // Default to "N/A" if empty or undefined
+      if (!(from && destination && startDate && endDate)) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+      try {
+          const response = await fetch("http://localhost:5000/get_gemini_response", { 
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 
+              prompt: `Plan an itinerary for ${destination}, departing from ${from}. 
+                      Travel dates: ${startDate} to ${endDate}. 
+                      Include:
+                      - Flight options
+                      - Weather forecast
+                      - Hotel recommendations
+                      - Restaurant suggestions
+                      ` 
+            }),
+          });
+
+          // Log the response to debug
+          console.log("Response status:", response.status);
+          const responseData = await response.json();
+          console.log("Response body:", responseData);
+
+          if (!response.ok) {
+              throw new Error("Failed to fetch itinerary");
+          }
+
+          const itineraryData = responseData.response; // Assuming 'response' contains the itinerary
+          console.log("Itinerary Data:", itineraryData);
+
+          // Navigate with the itinerary data
+          navigate("/itinerary", { state: { itinerary: itineraryData } });
+
+      } catch (error) {
+          console.error("Error planning itinerary:", error);
+          alert("Failed to generate itinerary. Please try again.");
+      }
+  };    
+  
   const [formData, setFormData] = useState({
     from: '',
     to: '',
@@ -34,15 +81,6 @@ const Home = () => {
       travelPartner: prevState.travelPartner,
       purposeOfVisit: prevState.purposeOfVisit
     }));
-  };
-
-
-  const handlePlanItineraryClick = () => {
-    if (formData.from && formData.to && formData.departure && formData.travelPartner && formData.purposeOfVisit) {
-      navigate("/itinerary"); // Redirects to the ItineraryPage
-    } else {
-      alert("Please fill in all required fields.");
-    }
   };
 
   const settings = {
@@ -81,7 +119,7 @@ const Home = () => {
             <h2>Plan Your Journey</h2>
             <p><b>Create a personalized travel itinerary for any location around the world!</b></p>
           </section>
-
+          
           <div className="flight-search-container">
             <div className="trip-type">
               <label><input type="radio" name="trip" defaultChecked /> <span>One-way</span></label>
