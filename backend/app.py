@@ -7,11 +7,16 @@ import google.generativeai as genai
 
 # Initialize Flask app and database
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # Corrected path to the database
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Ensure instance folder exists
+if not os.path.exists('instance'):
+    os.makedirs('instance')
+
+# Set up Gemini AI
 api_key = os.getenv("GEMINI_API_KEY")
-genai.configure(api_key = api_key)
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel('models/gemini-pro')
 
 # Initialize CORS
@@ -25,6 +30,10 @@ class User(db.Model):
     name = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
+
+# Create tables if they don't exist
+with app.app_context():
+    db.create_all()
 
 # Signup route
 @app.route('/signup', methods=['POST'])
@@ -69,7 +78,7 @@ def get_gemini_response():
 
     try:
         result = model.generate_content(prompt)
-        response = result.text 
+        response = result.text
         return jsonify({"response": response})
     except Exception as e:
         print(f"Error generating response: {e}")
