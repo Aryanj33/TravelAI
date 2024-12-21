@@ -28,7 +28,8 @@ const Login = () => {
     const result = await response.json();
 
     if (result.status === "success") {
-      navigate("/");
+        alert(result.message);
+        navigate("/");
     } else {
       setError(result.message);
     }
