@@ -25,6 +25,18 @@ const Home = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleSwap = () => {
+    setFormData(prevState => ({
+      from: prevState.to, 
+      to: prevState.from,
+      departure: prevState.departure,
+      return: prevState.return,
+      travelPartner: prevState.travelPartner,
+      purposeOfVisit: prevState.purposeOfVisit
+    }));
+  };
+
+
   const handlePlanItineraryClick = () => {
     if (formData.from && formData.to && formData.departure && formData.travelPartner && formData.purposeOfVisit) {
       navigate("/itinerary"); // Redirects to the ItineraryPage
@@ -78,15 +90,30 @@ const Home = () => {
             </div>
 
             <div className="search-fields">
-              <div className="field">
-                <label>From</label>
-                <input type="text" name="from" placeholder="Enter city or airport" value={formData.from} onChange={handleInputChange} />
-              </div>
-              <span className="swap-btn">⇄</span>
-              <div className="field">
-                <label>To</label>
-                <input type="text" name="to" placeholder="Enter city or airport" value={formData.to} onChange={handleInputChange} />
-              </div>
+            <div className="field">
+             <label>From</label>
+            <input
+          type="text"
+          name="from"
+          placeholder="Enter city or airport"
+          value={formData.from}
+          onChange={handleInputChange}
+        />
+      </div>
+      <span className="swap-btn" onClick={handleSwap}>
+        ⇄
+      </span>
+      <div className="field">
+        <label>To</label>
+        <input
+          type="text"
+          name="to"
+          placeholder="Enter city or airport"
+          value={formData.to}
+          onChange={handleInputChange}
+        />
+      </div>
+    
               <div className="field">
                 <label>Departure</label>
                 <input type="date" name="departure" value={formData.departure} onChange={handleInputChange} />
@@ -96,7 +123,7 @@ const Home = () => {
                 <input type="date" name="return" placeholder="Optional" value={formData.return} onChange={handleInputChange} />
               </div>
               <div className="field">
-                <label>Travel Partner</label>
+                <label>Trip Buddy</label>
                 <select name="travelPartner" value={formData.travelPartner} onChange={handleInputChange}>
                   <option value="">Select</option>
                   <option value="Solo">Solo</option>

@@ -460,6 +460,7 @@ body {
 }
 
 /* Main Search Fields */
+
 .search-fields {
     display: flex;
     flex-wrap: wrap;
@@ -492,19 +493,17 @@ body {
 }
 
 .swap-btn {
-    font-size: 1.7rem;
-    font-weight: bold;
+    font-size: 1.6rem;
+    /* font-weight: bold; */
     margin-top: 2.9rem;
     cursor: pointer;
     color: #007bff;
-    transition: color 0.3s;
-    text-align: center;
-    justify-content: center;
+    /* transition: color 0.3s; */
+    /* text-align: center;
+    justify-content: center; */
+    border: none;
 }
 
-.swap-btn:hover {
-    color: #34cae9;
-}
 
 /* Special Fares Section */
 .special-fares {
