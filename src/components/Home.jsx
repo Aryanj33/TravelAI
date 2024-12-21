@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 import './Home.css';
 import TopDestinations from './TopDestinations';
 import logo from '../assets/logo2.png';
@@ -6,6 +7,12 @@ import backkkgg from '../assets/backkkgg.webp';
 import { Link } from "react-router-dom";
 
 const Home = () => {
+
+  const navigate = useNavigate();
+
+  const handlePlanItineraryClick = () => {
+    navigate("/itinerary"); // Redirects to the ItineraryPage
+  };
   return (
     <>
       <header className="navbar">
@@ -103,7 +110,7 @@ const Home = () => {
           </div>
 
           <div className="search-btn">
-            <button>Plan Itinerary</button>
+            <button onClick={handlePlanItineraryClick}>Plan Itinerary</button>
           </div>
         </div>
 

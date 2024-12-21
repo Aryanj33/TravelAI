@@ -1,0 +1,114 @@
+/* General Layout */
+.itinerary-page {
+    display: flex;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+  }
+  
+  /* Sidebar Styles */
+  .sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 1rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    height: 100%;
+    overflow-y: auto;
+  }
+  
+  .sidebar nav ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar nav ul li {
+    margin: 1rem 0;
+  }
+  
+  .sidebar nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    display: block;
+    padding: 0.5rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sidebar nav ul li a:hover {
+    background-color: #34495e;
+  }
+  
+  /* Main Content */
+  .main-content {
+    margin-left: 250px;
+    padding: 2rem;
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  .main-content h2 {
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    color: #2c3e50;
+  }
+  
+  .main-content p {
+    margin: 0.5rem 0 1.5rem;
+    line-height: 1.5;
+    color: #555;
+  }
+  
+  .itinerary-details ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .itinerary-details ul li {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    background-color: #ecf0f1;
+    border-left: 4px solid #3498db;
+    border-radius: 5px;
+    color: #2c3e50;
+  }
+  
+  .itinerary-details ul li strong {
+    color: #3498db;
+  }
+  
+  /* Responsive Design */
+  @media screen and (max-width: 768px) {
+    .sidebar {
+      width: 200px;
+    }
+  
+    .main-content {
+      margin-left: 200px;
+      padding: 1rem;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .sidebar {
+      width: 100%;
+      position: static;
+      height: auto;
+    }
+  
+    .main-content {
+      margin-left: 0;
+      padding: 1rem;
+    }
+  
+    .sidebar nav ul {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+  
+    .sidebar nav ul li {
+      margin: 0.5rem;
+    }
+  }
