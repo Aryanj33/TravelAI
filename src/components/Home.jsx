@@ -5,27 +5,9 @@ import TopDestinations from './TopDestinations';
 import logo from '../assets/logo2.png';
 import backkkgg from '../assets/backkkgg.webp';
 import { Link } from "react-router-dom";
-import Slider from 'react-slick';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
-const reviews = [
-  {
-    user: 'John Doe',
-    review: 'TravelAI made my trip planning so easy and fun! The AI-generated itinerary was perfect.',
-    rating: 5
-  },
-  {
-    user: 'Jane Smith',
-    review: 'Amazing experience! The AI suggestions were spot on and saved me a lot of time.',
-    rating: 5
-  },
-  {
-    user: 'Alice Johnson',
-    review: 'I loved how TravelAI customized the itinerary based on my preferences. Highly recommend!',
-    rating: 5
-  }
-];
+
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -193,29 +175,6 @@ const Home = () => {
         </section>
 
         <TopDestinations />
-
-        <div className="reviews-container">
-          <h2 className="reviews-title">User Reviews</h2>
-          <Slider {...settings}>
-            {reviews.map((review, index) => (
-              <div key={index} className="review-card">
-                <div className="review-content">
-                  <img src={`https://randomuser.me/api/portraits/men/${index + 1}.jpg`} alt={review.user} className="review-picture" />
-                  <h3 className="review-user">{review.user}</h3>
-                  <p className="review-text">{review.review}</p>
-                  <div className="review-rating">
-                    {[...Array(review.rating)].map((_, i) => (
-                      <svg key={i} className="star-icon" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.97a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.392 2.46a1 1 0 00-.364 1.118l1.286 3.97c.3.921-.755 1.688-1.54 1.118l-3.392-2.46a1 1 0 00-1.175 0l-3.392 2.46c-.784.57-1.838-.197-1.54-1.118l1.286-3.97a1 1 0 00-.364-1.118L2.049 9.397c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.97z" />
-                      </svg>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </Slider>
-        </div>
-
         <div className="sections-container">
           <section id="how-it-works" className="how-it-works">
             <div className="container">
