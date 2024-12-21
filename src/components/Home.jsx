@@ -1,18 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Home.css';
 import TopDestinations from './TopDestinations';
 import logo from '../assets/logo2.png';
 import backkkgg from '../assets/backkkgg.webp';
 import { Link } from "react-router-dom";
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+const reviews = [
+  {
+    user: 'John Doe',
+    review: 'TravelAI made my trip planning so easy and fun! The AI-generated itinerary was perfect.',
+    rating: 5
+  },
+  {
+    user: 'Jane Smith',
+    review: 'Amazing experience! The AI suggestions were spot on and saved me a lot of time.',
+    rating: 5
+  },
+  {
+    user: 'Alice Johnson',
+    review: 'I loved how TravelAI customized the itinerary based on my preferences. Highly recommend!',
+    rating: 5
+  }
+];
 
 const Home = () => {
-
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    from: '',
+    to: '',
+    departure: '',
+    return: '',
+    travelPartner: '',
+    purposeOfVisit: ''
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handlePlanItineraryClick = () => {
-    navigate("/itinerary"); // Redirects to the ItineraryPage
+    if (formData.from && formData.to && formData.departure && formData.travelPartner && formData.purposeOfVisit) {
+      navigate("/itinerary"); // Redirects to the ItineraryPage
+    } else {
+      alert("Please fill in all required fields.");
+    }
   };
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  };
+
   return (
     <>
       <header className="navbar">
@@ -31,125 +77,145 @@ const Home = () => {
 
       <main>
         <section 
-       
-        style={{
-          backgroundImage: `url(${backkkgg})`,
-          backgroundSize: "cover", // Ensures the image covers the entire area
-          backgroundRepeat: "no-repeat", // Prevents the image from repeating
-        }}
-      >
-    
-      
-        <section  className="hero">
-          <h2>Plan Your Journey</h2>
-          <p><b>Create a personalized travel itinerary for any location around the world!</b></p>
-        </section>
+          style={{
+            backgroundImage: `url(${backkkgg})`,
+            backgroundSize: "cover", // Ensures the image covers the entire area
+            backgroundRepeat: "no-repeat", // Prevents the image from repeating
+          }}
+        >
+          <section className="hero">
+            <h2>Plan Your Journey</h2>
+            <p><b>Create a personalized travel itinerary for any location around the world!</b></p>
+          </section>
 
-        <div className="flight-search-container">
-          <div className="trip-type">
-            <label><input type="radio" name="trip" defaultChecked /> <span>One-way</span></label>
-            <label><input type="radio" name="trip" /> <span>Round-trip</span></label>
-            <label><input type="radio" name="trip" /> <span>Multi-city</span></label>
-          </div>
+          <div className="flight-search-container">
+            <div className="trip-type">
+              <label><input type="radio" name="trip" defaultChecked /> <span>One-way</span></label>
+              <label><input type="radio" name="trip" /> <span>Round-trip</span></label>
+              <label><input type="radio" name="trip" /> <span>Multi-city</span></label>
+            </div>
 
-          <div className="search-fields">
-            <div className="field">
-              <label>From</label>
-              <input type="text" placeholder="Enter city or airport" />
-            </div>
-            <span className="swap-btn">⇄</span>
-            <div className="field">
-              <label>To</label>
-              <input type="text" placeholder="Enter city or airport" />
-            </div>
-            <div className="field">
-              <label>Departure</label>
-              <input type="date" />
-            </div>
-            <div className="field">
-              <label>Return</label>
-              <input type="date" placeholder="Optional" />
-            </div>
-            <div className="field">
-              <label>Travel Partner</label>
-              <select>
-                <option>Solo</option>
-                <option>Couple</option>
-                <option>Family</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div className="field">
-              <label>Purpose of Visit</label>
-              <select>
-                <option>Economy</option>
-                <option>Premium Economy</option>
-                <option>Business</option>
-                <option>First Class</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="special-fares">
-            <div className="fare-option">
-              <input type="checkbox" id="student" />
-              <label htmlFor="student">👩‍🎓 Student<br /><span>Extra Baggage</span></label>
-            </div>
-            <div className="fare-option">
-              <input type="checkbox" id="senior" />
-              <label htmlFor="senior">👴 Senior Citizen<br /><span>Exclusive Discounts</span></label>
-            </div>
-            <div className="fare-option">
-              <input type="checkbox" id="armed-forces" />
-              <label htmlFor="armed-forces">🪖 Armed Forces<br /><span>Exclusive Discounts</span></label>
-            </div>
-            <div className="fare-option">
-              <input type="checkbox" id="doctors" />
-              <label htmlFor="doctors">👨‍⚕️ Doctors & Nurses<br /><span>Exclusive Discounts</span></label>
-            </div>
-          </div>
-
-          <div className="search-btn">
-            <button onClick={handlePlanItineraryClick}>Plan Itinerary</button>
-          </div>
-        </div>
-
-        <section id="features" className="features">
-          <div className="container">
-            <h2 className="section-title">Explore Our Features</h2>
-            <div className="features-grid">
-              <div className="feature-item">
-                <div className="feature-icon">
-                  <i className="fas fa-route"></i>
-                </div>
-                <h3>Smart Itinerary Generator</h3>
-                <p>Our AI-powered tool crafts personalized travel plans tailored to your preferences and schedule.</p>
-                <a href="#" className="feature-link">Learn More</a>
+            <div className="search-fields">
+              <div className="field">
+                <label>From</label>
+                <input type="text" name="from" placeholder="Enter city or airport" value={formData.from} onChange={handleInputChange} />
               </div>
-              <div className="feature-item">
-                <div className="feature-icon">
-                  <i className="fas fa-globe-americas"></i>
-                </div>
-                <h3>Worldwide Coverage</h3>
-                <p>Discover hidden gems and popular destinations across every continent with local insights.</p>
-                <a href="#" className="feature-link">Explore Destinations</a>
+              <span className="swap-btn">⇄</span>
+              <div className="field">
+                <label>To</label>
+                <input type="text" name="to" placeholder="Enter city or airport" value={formData.to} onChange={handleInputChange} />
               </div>
-              <div className="feature-item">
-                <div className="feature-icon">
-                  <i className="fas fa-laptop"></i>
-                </div>
-                <h3>User-Friendly Interface</h3>
-                <p>Experience seamless trip planning with our intuitive and responsive design.</p>
-                <a href="#" className="feature-link">Try Now</a>
+              <div className="field">
+                <label>Departure</label>
+                <input type="date" name="departure" value={formData.departure} onChange={handleInputChange} />
+              </div>
+              <div className="field">
+                <label>Return</label>
+                <input type="date" name="return" placeholder="Optional" value={formData.return} onChange={handleInputChange} />
+              </div>
+              <div className="field">
+                <label>Travel Partner</label>
+                <select name="travelPartner" value={formData.travelPartner} onChange={handleInputChange}>
+                  <option value="">Select</option>
+                  <option value="Solo">Solo</option>
+                  <option value="Couple">Couple</option>
+                  <option value="Family">Family</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div className="field">
+                <label>Purpose of Visit</label>
+                <select name="purposeOfVisit" value={formData.purposeOfVisit} onChange={handleInputChange}>
+                  <option value="">Select</option>
+                  <option value="Economy">Economy</option>
+                  <option value="Premium Economy">Premium Economy</option>
+                  <option value="Business">Business</option>
+                  <option value="First Class">First Class</option>
+                </select>
               </div>
             </div>
+
+            <div className="special-fares">
+              <div className="fare-option">
+                <input type="checkbox" id="student" />
+                <label htmlFor="student">👩‍🎓 Student<br /><span>Extra Baggage</span></label>
+              </div>
+              <div className="fare-option">
+                <input type="checkbox" id="senior" />
+                <label htmlFor="senior">👴 Senior Citizen<br /><span>Exclusive Discounts</span></label>
+              </div>
+              <div className="fare-option">
+                <input type="checkbox" id="armed-forces" />
+                <label htmlFor="armed-forces">🪖 Armed Forces<br /><span>Exclusive Discounts</span></label>
+              </div>
+              <div className="fare-option">
+                <input type="checkbox" id="doctors" />
+                <label htmlFor="doctors">👨‍⚕️ Doctors & Nurses<br /><span>Exclusive Discounts</span></label>
+              </div>
+            </div>
+
+            <div className="search-btn">
+              <button onClick={handlePlanItineraryClick}>Plan Itinerary</button>
+            </div>
           </div>
-        </section>
+
+          <section id="features" className="features">
+            <div className="container">
+              <h2 className="section-title">Explore Our Features</h2>
+              <div className="features-grid">
+                <div className="feature-item">
+                  <div className="feature-icon">
+                    <i className="fas fa-route"></i>
+                  </div>
+                  <h3>Smart Itinerary Generator</h3>
+                  <p>Our AI-powered tool crafts personalized travel plans tailored to your preferences and schedule.</p>
+                  <a href="#" className="feature-link">Learn More</a>
+                </div>
+                <div className="feature-item">
+                  <div className="feature-icon">
+                    <i className="fas fa-globe-americas"></i>
+                  </div>
+                  <h3>Worldwide Coverage</h3>
+                  <p>Discover hidden gems and popular destinations across every continent with local insights.</p>
+                  <a href="#" className="feature-link">Explore Destinations</a>
+                </div>
+                <div className="feature-item">
+                  <div className="feature-icon">
+                    <i className="fas fa-laptop"></i>
+                  </div>
+                  <h3>User-Friendly Interface</h3>
+                  <p>Experience seamless trip planning with our intuitive and responsive design.</p>
+                  <a href="#" className="feature-link">Try Now</a>
+                </div>
+              </div>
+            </div>
+          </section>
         </section>
 
         <TopDestinations />
 
-        
+        <div className="reviews-container">
+          <h2 className="reviews-title">User Reviews</h2>
+          <Slider {...settings}>
+            {reviews.map((review, index) => (
+              <div key={index} className="review-card">
+                <div className="review-content">
+                  <img src={`https://randomuser.me/api/portraits/men/${index + 1}.jpg`} alt={review.user} className="review-picture" />
+                  <h3 className="review-user">{review.user}</h3>
+                  <p className="review-text">{review.review}</p>
+                  <div className="review-rating">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <svg key={i} className="star-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.97a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.392 2.46a1 1 0 00-.364 1.118l1.286 3.97c.3.921-.755 1.688-1.54 1.118l-3.392-2.46a1 1 0 00-1.175 0l-3.392 2.46c-.784.57-1.838-.197-1.54-1.118l1.286-3.97a1 1 0 00-.364-1.118L2.049 9.397c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.97z" />
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Slider>
+        </div>
+
         <div className="sections-container">
           <section id="how-it-works" className="how-it-works">
             <div className="container">
@@ -168,7 +234,7 @@ const Home = () => {
                   <p>Receive a complete day-by-day travel plan tailored to your preferences.</p>
                 </li>
               </ol>
-              </div>
+            </div>
           </section>
 
           <section id="testimonials" className="testimonials">
@@ -183,60 +249,59 @@ const Home = () => {
             </div>
           </section>
         </div>
-        
       </main>
 
       <footer className="footer" id="contact">
-  <div className="footer-container">
-    <div className="footer-left">
-      <h2>Contact Us</h2>
-      <form className="contact-form">
-        <input type="text" placeholder="Your Name" />
-        <input type="email" placeholder="Your Email" />
-        <textarea placeholder="Your Message"></textarea>
-        <button type="submit">Send Message</button>
-      </form>
-    </div>
+        <div className="footer-container">
+          <div className="footer-left">
+            <h2>Contact Us</h2>
+            <form className="contact-form">
+              <input type="text" placeholder="Your Name" />
+              <input type="email" placeholder="Your Email" />
+              <textarea placeholder="Your Message"></textarea>
+              <button type="submit">Send Message</button>
+            </form>
+          </div>
 
-    <div className="footer-middle">
-      <img src={logo} alt="Travel AI Logo" className="footer-logo" />
-      <div className="social-links">
-        <a href="https://facebook.com/travelai" className="social-icon" target="_blank" rel="noopener noreferrer">
-          <i className="fab fa-facebook-f"></i>
-        </a>
-        <a href="https://twitter.com/travelai" className="social-icon" target="_blank" rel="noopener noreferrer">
-          <i className="fab fa-twitter"></i>
-        </a>
-        <a href="https://instagram.com/travelai" className="social-icon" target="_blank" rel="noopener noreferrer">
-          <i className="fab fa-instagram"></i>
-        </a>
-        <a href="https://linkedin.com/company/travelai" className="social-icon" target="_blank" rel="noopener noreferrer">
-          <i className="fab fa-linkedin-in"></i>
-        </a>
-      </div>
-      
-      <div className="contact-info">
-        <p><i className="fas fa-envelope"></i> support@travelai.com</p>
-        <p><i className="fas fa-envelope"></i> careers@travelai.com</p>
-        <p><i className="fas fa-map-marker-alt"></i> Head Office: Jaypee Institute of Information Technology,<br />Sector 62, Noida, 201309</p>
-        <p><i className="fas fa-phone"></i> +91 120-2400973</p>
-        <p><i className="fas fa-clock"></i> Mon - Sat: 9:00 AM - 6:00 PM</p>
-      </div>
-    </div>
-    
-    <div className="footer-right">
-      <h2>Subscribe to Newsletter</h2>
-      <form className="newsletter-form">
-        <input type="email" placeholder="Enter your email address" />
-        <button type="submit">Subscribe</button>
-      </form>
-    </div>
-  </div>
-  
-  <div className="footer-bottom">
-    <p>&copy; 2024 TravelPlanner. All rights reserved.</p>
-  </div>
-</footer>
+          <div className="footer-middle">
+            <img src={logo} alt="Travel AI Logo" className="footer-logo" />
+            <div className="social-links">
+              <a href="https://facebook.com/travelai" className="social-icon" target="_blank" rel="noopener noreferrer">
+                <i className="fab fa-facebook-f"></i>
+              </a>
+              <a href="https://twitter.com/travelai" className="social-icon" target="_blank" rel="noopener noreferrer">
+                <i className="fab fa-twitter"></i>
+              </a>
+              <a href="https://instagram.com/travelai" className="social-icon" target="_blank" rel="noopener noreferrer">
+                <i className="fab fa-instagram"></i>
+              </a>
+              <a href="https://linkedin.com/company/travelai" className="social-icon" target="_blank" rel="noopener noreferrer">
+                <i className="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+
+            <div className="contact-info">
+              <p><i className="fas fa-envelope"></i> support@travelai.com</p>
+              <p><i className="fas fa-envelope"></i> careers@travelai.com</p>
+              <p><i className="fas fa-map-marker-alt"></i> Head Office: Jaypee Institute of Information Technology,<br />Sector 62, Noida, 201309</p>
+              <p><i className="fas fa-phone"></i> +91 120-2400973</p>
+              <p><i className="fas fa-clock"></i> Mon - Sat: 9:00 AM - 6:00 PM</p>
+            </div>
+          </div>
+
+          <div className="footer-right">
+            <h2>Subscribe to Newsletter</h2>
+            <form className="newsletter-form">
+              <input type="email" placeholder="Enter your email address" />
+              <button type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <p>&copy; 2024 TravelPlanner. All rights reserved.</p>
+        </div>
+      </footer>
     </>
   );
 };
