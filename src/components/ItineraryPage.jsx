@@ -1,13 +1,32 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import "./ItineraryPage.css";
+import { Link } from "react-router-dom";
+import logo from '../assets/logo2.png';
 
 const ItineraryPage = () => {
   const location = useLocation();
   const itineraryData = location.state?.itinerary;
 
   return (
+  
     <div className="itinerary-page">
+       <header className="navbar">
+        <div className="logo">
+          <img src={logo} alt="Travel AI Logo" />
+          <h1>Travel AI</h1>
+        </div>
+        <nav>
+          <ul>
+            {/* <li><a href="#features">Features</a></li> */}
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/">Login</Link></li>
+            
+
+          </ul>
+        </nav>
+      </header>
+      {/* Sidebar */}
       <aside className="sidebar">
         <nav>
           <ul>
