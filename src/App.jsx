@@ -4,19 +4,22 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import SignUp from "./components/Signup";
 import ItineraryPage from './components/ItineraryPage';
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/Signup" element={<SignUp />} />
-        <Route path="/itinerary" element={<ItineraryPage />} />
-
-      </Routes>
-    </Router>
+    <GoogleOAuthProvider clientId="336397409824-9nntcc6i5atepe4mkgehhj7j337qu7sm.apps.googleusercontent.com">
+      <Router>
+        <Routes>
+          {/* Define routes for each page */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/itinerary" element={<ItineraryPage />} />
+        </Routes>
+      </Router>
+    </GoogleOAuthProvider>
   );
 };
+
 export default App;
