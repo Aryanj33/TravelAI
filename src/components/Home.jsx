@@ -8,12 +8,54 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const handlePlanItineraryClick = () => {
-    navigate("/itinerary"); // Redirects to the ItineraryPage
-  };
-  return (
+    const handlePlanItineraryClick = async () => {
+        const from = document.querySelector('[name="from"]').value;
+        const destination = document.querySelector('[name="to"]').value;
+        const startDate = document.querySelector('[name="startDate"]').value;
+        const endDate = document.querySelector('[name="endDate"]').value || "N/A";  // Default to "N/A" if empty or undefined
+    
+        try {
+            const response = await fetch("http://localhost:5000/get_gemini_response", { 
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ 
+                prompt: `Plan an itinerary for ${destination}, departing from ${from}. 
+                        Travel dates: ${startDate} to ${endDate}. 
+                        Include:
+                        - Flight options
+                        - Weather forecast
+                        - Hotel recommendations
+                        - Restaurant suggestions
+                        ` 
+              }),
+            });
+    
+            // Log the response to debug
+            console.log("Response status:", response.status);
+            const responseData = await response.json();
+            console.log("Response body:", responseData);
+    
+            if (!response.ok) {
+                throw new Error("Failed to fetch itinerary");
+            }
+    
+            const itineraryData = responseData.response; // Assuming 'response' contains the itinerary
+            console.log("Itinerary Data:", itineraryData);
+    
+            // Navigate with the itinerary data
+            navigate("/itinerary", { state: { itinerary: itineraryData } });
+    
+        } catch (error) {
+            console.error("Error planning itinerary:", error);
+            alert("Failed to generate itinerary. Please try again.");
+        }
+    };    
+    
+    return (
     <>
       <header className="navbar">
         <div className="logo">
@@ -55,20 +97,20 @@ const Home = () => {
           <div className="search-fields">
             <div className="field">
               <label>From</label>
-              <input type="text" placeholder="Enter city or airport" />
+              <input name = "from" type="text" placeholder="Enter city or airport" />
             </div>
             <span className="swap-btn">⇄</span>
             <div className="field">
               <label>To</label>
-              <input type="text" placeholder="Enter city or airport" />
+              <input name = "to" type="text" placeholder="Enter city or airport" />
             </div>
             <div className="field">
               <label>Departure</label>
-              <input type="date" />
+              <input name = "startDate" type="date" />
             </div>
             <div className="field">
               <label>Return</label>
-              <input type="date" placeholder="Optional" />
+              <input name = "endDate" type="date" placeholder="Optional" />
             </div>
             <div className="field">
               <label>Travel Partner</label>
@@ -76,7 +118,7 @@ const Home = () => {
                 <option>Solo</option>
                 <option>Couple</option>
                 <option>Family</option>
-                <option>Other</option>
+                <option>Group</option>
               </select>
             </div>
             <div className="field">
