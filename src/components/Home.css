@@ -644,11 +644,11 @@ body {
 .footer {
     background-color: #333;
     color: white;
-    padding: 3rem 4rem;
+    padding: 1.5rem 3rem;
 }
 
 .footer-container {
-    max-width: 1400px;
+    max-width: 1300px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -667,14 +667,14 @@ body {
 .footer-logo {
     width: 80px;
     height: 80px;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .social-links {
     display: flex;
     justify-content: center;
     gap: 2rem;
-    margin: 2rem 0;
+    margin: 1rem 0;
 }
 
 .social-icon {
@@ -723,13 +723,13 @@ body {
 .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.1rem;
     width: 100%;
 }
 
 .contact-form input,
-.contact-form textarea {
-    width: 100%;
+ .contact-form textarea {
+    width: 80%;
     padding: 1rem;
     border: 1px solid #555;
     border-radius: 5px;
@@ -739,7 +739,7 @@ body {
 }
 
 .contact-form textarea {
-    height: 120px;
+    height: 60px;
     resize: vertical;
 }
 
@@ -753,12 +753,14 @@ body {
     cursor: pointer;
     font-size: 1.4rem;
     transition: background-color 0.3s;
+    margin-top: 10px;
+    margin-left: 60px;
 }
 
 .newsletter-form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
     width: 300px;
     align-items: flex-end;
 }
@@ -774,22 +776,23 @@ body {
 }
 
 .newsletter-form button {
-    width: 150px;
+    width: 130px;
     padding: 1rem;
     background-color: #f17d10;
     color: white;
     border: none;
+    margin-right: 30px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 1.4rem;
 }
 
 .footer-bottom {
-    margin-top: 2rem;
-    padding-top: 2rem;
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
     border-top: 1px solid #555;
     text-align: center;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: #888;
 }
 

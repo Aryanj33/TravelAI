@@ -1,0 +1,75 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# Build directories
+build/
+dist/
+
+# Static Bundles
+*.js.map
+
+# Testing
+coverage/
+
+# Environment files
+.backend
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Misc
+.DS_Store
+*.pem
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.swn
+
+# Yarn and npm artifacts
+.yarn-integrity
+.pnp.*
+.yarn-cache/
+.yarnrc.yml
+
+# Mac OS
+*.DS_Store
+
+# Temp files
+*.tmp
+*.temp
+*.bak
+
+# Ignore TypeScript cache
+*.tsbuildinfo
+
+# Package lock files (if not using them)
+yarn.lock
+
+# Lint and formatting
+.eslintcache
+.prettierignore
+.prettierrc
+
+# Storybook
+storybook-static/
+
+# Next.js
+.next/
+
+# React Native
+.expo/
+*.expo
+*.expo-shared
