@@ -819,33 +819,32 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgba(255, 255, 255, 0.5);
     z-index: 1000;
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-  }
-  
-  .planning-overlay.active {
+}
+
+.planning-overlay.active {
     opacity: 1;
     visibility: visible;
-  }
-  
-  .planning-content {
+}
+
+.planning-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     padding: 2rem;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     animation: popIn 1.2s ease-in-out;
-  }
-  
-  .planning-content p {
-    font-size: 2rem;
-    color: #333;
-    margin-top: 1rem;
-  }
+}
+
   
   @keyframes popIn {
     0% {
