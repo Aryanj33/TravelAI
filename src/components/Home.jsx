@@ -3,158 +3,42 @@ import { useNavigate } from "react-router-dom";
 import { Oval } from 'react-loader-spinner';
 import './Home.css';
 import TopDestinations from './TopDestinations';
+import Clients from './Clients';
 import logo from '../assets/logo2.png';
 import backkkgg from '../assets/backkkgg.webp';
 import { Link } from "react-router-dom";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+const ExpenditureSlider = () => {
+  const [expenditure, setExpenditure] = useState(500);
+
+  const handleSliderChange = (e) => {
+    setExpenditure(e.target.value);
+  };
+
+  return (
+    <div className="expenditure-slider-container">
+    <h2>Set Your Expenditure</h2>
+    <div>Selected Amount: <b>${expenditure}</b></div>
+    <input
+      type="range"
+      min="100"
+      max="100000"
+      step="1000"
+      value={expenditure}
+      onChange={handleSliderChange}
+    />
+  </div>
+  
+  );
+};
+
 
 const Home = () => {
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false); // Loading state
-
-
-  const handlePlanItineraryClick = async () => {
-      const from = document.querySelector('[name="from"]').value;
-      const destination = document.querySelector('[name="to"]').value;
-      const startDate = document.querySelector('[name="departure"]').value;
-      const endDate = document.querySelector('[name="returning"]').value || "N/A";  // Default to "N/A" if empty or undefined
-      if (!(from && to && departure && returning)) {
-        alert("Please fill in all required fields.");
-        return;
-      }
-      try {
-          const response = await fetch("http://localhost:5000/get_gemini_response", { 
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ 
-              prompt: `Plan a detailed travel itinerary for the following:
-
-                        - Destination: ${destination}
-                        - Departure city: ${from}
-                        - Travel dates: ${startDate} to ${endDate}
-
-                        ### Requirements:
-                        1. **Itinerary Overview**:
-                        - Title for the trip (e.g., "Trip to Paris").
-
-                        2. **Daily Plan**:
-                        - For each day, provide:
-                            - Day number.
-                            - Activities in the format: 
-                            {
-                                time: "Time in HH:MM AM/PM format",
-                                activity: "Short activity name",
-                                details: "Detailed description of the activity"
-                            }
-
-                        3. **Accommodation Details**:
-                        - List recommended hotels with:
-                            - Name.
-                            - Check-in and check-out dates.
-                            - Details (e.g., location, amenities).
-                            - price est in rupees
-
-                        4. **Flight Details**:
-                        - Include flight options with:
-                            - Airline name.
-                            - Flight number.
-                            - Departure time.
-                            - Arrival time.
-                            - Additional details.
-                            - price est in rupees
-                        
-                        5. **Train Details**
-                        - Include train options with:
-                            - train name.
-                            - departure time 
-                            - arrival time
-                            - additional details 
-                            - price est in rupees 
-
-                        ### Response Format:
-                        Respond as a **valid JSON object** with this exact schema:
-
-                        {
-                        "title": "Trip Title",
-                        "days": [
-                            {
-                            "day": 1,
-                            "activities": [
-                                {
-                                "time": "9:00 AM",
-                                "activity": "Visit Eiffel Tower",
-                                "details": "Tickets included; duration 2 hours."
-                                },
-                                ...
-                            ]
-                            },
-                            ...
-                        ],
-                        "hotels": [
-                            {
-                            "name": "Hotel Name",
-                            "checkin": "YYYY-MM-DD",
-                            "checkout": "YYYY-MM-DD",
-                            "details": "Located near attractions; free breakfast included."
-                            "price": "estimated price"
-                            },
-                            ...
-                        ],
-                        "flights": [
-                            {
-                            "airline": "Airline Name",
-                            "flightNumber": "Flight Number",
-                            "departure": "YYYY-MM-DDTHH:mm",
-                            "arrival": "YYYY-MM-DDTHH:mm",
-                            "details": "Non-stop; 2 checked bags included."
-                            "price": "estimated price"
-                            },
-                            ...
-                        ],
-                        "trains": [
-                            {
-                            "name": "train Name",
-                            "departure": "YYYY-MM-DDTHH:mm",
-                            "arrival": "YYYY-MM-DDTHH:mm",
-                            "details": "Non-stop; 2 checked bags included."
-                            "price": "estimated price"
-                            },
-                            ...
-                        ]
-                        }
-
-                        ### Notes:
-                        - If data for any field is unavailable, return an empty array for that field.
-                        - Ensure the response adheres strictly to the JSON format without additional text or invalid keys.
-                        - Validate the response before sending.
-                      ` 
-            }),
-          });
-        
-
-          // Log the response to debug
-          console.log("Response status:", response.status);
-          const responseData = await response.json();
-          console.log("Response body:", responseData);
-
-          if (!response.ok) {
-              throw new Error("Failed to fetch itinerary");
-          }
-
-          const itineraryData = responseData.response; // Assuming 'response' contains the itinerary
-          console.log("Itinerary Data:", itineraryData);
-
-          // Navigate with the itinerary data
-          navigate("/itinerary", { state: { itinerary: itineraryData } });
-
-      } catch (error) {
-          console.error("Error planning itinerary:", error);
-          alert("Failed to generate itinerary. Please try again.");
-      }
-  };    }
-  
 
   const [formData, setFormData] = useState({
     from: '',
@@ -167,9 +51,9 @@ const Home = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
     setFormData({ ...formData, [name]: value });
   };
+  
 
 
 
@@ -209,10 +93,10 @@ const Home = () => {
                     - Travel dates: ${departure} to ${endDate}
 
                     ### Requirements:
-                    1. **Itinerary Overview**:
+                    1. *Itinerary Overview*:
                     - Title for the trip (e.g., "Trip to Paris").
 
-                    2. **Daily Plan**:
+                    2. *Daily Plan*:
                     - For each day, provide:
                         - Day number.
                         - Activities in the format: 
@@ -222,14 +106,14 @@ const Home = () => {
                             details: "Detailed description of the activity"
                         }
 
-                    3. **Accommodation Details**:
+                    3. *Accommodation Details*:
                     - List recommended hotels with:
                         - Name.
                         - Check-in and check-out dates.
                         - Details (e.g., location, amenities).
                         - price est
 
-                    4. **Flight Details**:
+                    4. *Flight Details*:
                     - Include flight options with:
                         - Airline name.
                         - Flight number.
@@ -239,7 +123,7 @@ const Home = () => {
                         - price est
 
                     ### Response Format:
-                    Respond as a **valid JSON object** with this exact schema:
+                    Respond as a *valid JSON object* with this exact schema:
 
                     {
                     "title": "Trip Title",
@@ -301,6 +185,7 @@ const Home = () => {
       setIsLoading(false); // Stop loading animation
     }
   };    
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <>
@@ -379,11 +264,13 @@ const Home = () => {
               </div>
               <div className="field">
                 <label>Departure</label>
-                <input type="date" name="departure" value={formData.departure} onChange={handleInputChange} />
+                <input type="date" name="departure" value={formData.departure}
+                  min={today} onChange={handleInputChange} />
               </div>
               <div className="field">
                 <label>Return</label>
-                <input type="date" name="return" placeholder="Optional" value={formData.return} onChange={handleInputChange} />
+                <input type="date" name="return" placeholder="Optional" value={formData.return}
+                min={formData.departure || today} onChange={handleInputChange} />
               </div>
               <div className="field">
                 <label>Trip Buddy</label>
@@ -396,13 +283,15 @@ const Home = () => {
                 </select>
               </div>
               <div className="field">
-                <label>Flight Mode</label>
+                <label>Travel Preferences</label>
                 <select name="purposeOfVisit" value={formData.purposeOfVisit} onChange={handleInputChange}>
                   <option value="">Select</option>
-                  <option value="Economy">Economy</option>
-                  <option value="Premium Economy">Premium Economy</option>
-                  <option value="Business">Business</option>
-                  <option value="First Class">First Class</option>
+                  <option value="Economy">FamilyTrip</option>
+                  <option value="Premium Economy">AdventureTrip</option>
+                  <option value="HoneyMoon">HoneyMoon</option>
+                  <option value="First Class">GroupTravel</option>
+                  <option value="Pilgrimage">Pilgrimage</option>
+                  <option value="Buisness">Buisness</option>
                 </select>
               </div>
             </div>
@@ -425,7 +314,7 @@ const Home = () => {
                 <label htmlFor="doctors">👨‍⚕️ Doctors & Nurses<br /><span>Exclusive Discounts</span></label>
               </div>
             </div>
-
+            <ExpenditureSlider />
             <div className="search-btn">
               <button onClick={handlePlanItineraryClick}>Plan Itinerary</button>
             </div>
@@ -462,10 +351,14 @@ const Home = () => {
               </div>
             </div>
           </section>
-        </section>
+          </section>
 
         <TopDestinations />
+        
+        <Clients/>
+       
         <div className="sections-container">
+          
           <section id="how-it-works" className="how-it-works">
             <div className="container">
               <h2>How It Works</h2>
@@ -483,18 +376,6 @@ const Home = () => {
                   <p>Receive a complete day-by-day travel plan tailored to your preferences.</p>
                 </li>
               </ol>
-            </div>
-          </section>
-
-          <section id="testimonials" className="testimonials">
-            <h2>What Our Users Say</h2>
-            <div className="testimonial">
-              <p>"TravelPlanner made my trip to Bangkok unforgettable. Highly recommend! "</p>
-              <span>- Arnav K.</span>
-            </div>
-            <div className="testimonial">
-              <p>"The AI-generated itineraries saved me hours of research. A must-have for travelers!"</p>
-              <span>- Mark T.</span>
             </div>
           </section>
         </div>

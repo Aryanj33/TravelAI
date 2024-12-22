@@ -134,7 +134,7 @@ body {
 .hero h2 {
     font-size: 5.8rem; /* Increased font size for prominence */
     margin-bottom: 10px; /* Adjusted spacing */
-    margin-top: 90px; /* Adjusted spacing */
+    margin-top: 70px; /* Adjusted spacing */
     font-weight: 700; /* Made text bold */
     text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.7);
     color: #fdfdfd; /* Bright text color to contrast the background */
@@ -539,6 +539,71 @@ body {
     font-size: 1.2rem;
     color: #777;
 }
+/* Expenditure Slider Styles */
+.expenditure-slider-container {
+    margin: 0 0; /* Add spacing above and below */
+   
+    text-align: center; /* Center align content */
+}
+
+.expenditure-slider-container h2 {
+    font-size: 1.5rem; /* Match header font size */
+    font-weight: bold;
+    color: #333; /* Consistent text color */
+    margin-bottom: 0.8rem; /* Space below the title */
+}
+
+.expenditure-slider-container .slider-value {
+    font-size: 1.4rem; /* Slightly smaller font for clarity */
+    font-weight: bold;
+    color: #f17d10; /* Highlight the value in orange */
+    margin-bottom: 0.3rem; /* Space between value and slider */
+}
+
+.expenditure-slider-container input[type="range"] {
+    width: 80%; /* Full width slider */
+    appearance: none;
+    background: #ddd; /* Slider track color */
+    height: 7.5px; /* Increase height for better visibility */
+    border-radius: 5px; /* Rounded track */
+    outline: none;
+    transition: background 0.3s ease;
+    margin-bottom: 0.3rem; /* Space below the slider */
+}
+
+.expenditure-slider-container input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 15px; /* Slightly larger thumb */
+    height: 15px;
+    border-radius: 50%;
+    background: #f17d10; /* Thumb matches theme */
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+    transition: background 0.3s ease;
+}
+
+.expenditure-slider-container input[type="range"]:hover::-webkit-slider-thumb {
+    background: #f28841; /* Hover effect */
+}
+
+.expenditure-slider-container input[type="range"]:focus::-webkit-slider-thumb {
+    background: #f17d10;
+    outline: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .expenditure-slider-container {
+        padding: 1.5rem;
+    }
+    .expenditure-slider-container h2 {
+        font-size: 1.4rem;
+    }
+    .expenditure-slider-container .slider-value {
+        font-size: 1.2rem;
+    }
+}
+
 
 /* Search Button */
 .search-btn {
