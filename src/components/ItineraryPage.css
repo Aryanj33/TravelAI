@@ -217,7 +217,7 @@
       margin: 0.75rem;
     }
   }
-  .day-section, .hotel-section, .flight-section {
+  .day-section, .hotel-section, .flight-section, .train-section{
   margin: 20px 0;
   padding: 15px;
   background-color: #f9f9f9;
@@ -225,7 +225,7 @@
   border-radius: 5px;
 }
 
-.day-section h3, .hotel-section p, .flight-section p {
+.day-section h3, .hotel-section p, .flight-section p, .train-section p{
   margin: 10px 0;
 }
 
