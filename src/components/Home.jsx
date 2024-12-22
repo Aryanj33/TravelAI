@@ -33,6 +33,14 @@ const navigate = useNavigate();
                       - Weather forecast
                       - Hotel recommendations
                       - Restaurant suggestions
+
+                      Format the response as a JSON object with the following keys:  
+                        - 'title' for the trip name.  
+                        - 'days' as an array of day-wise activities. Each day should have 'day' and 'activities' keys. 
+                        activities key should be an array of activites  including the 'time', 'activity' and 'details'
+                        - 'hotels' as an array of hotels for the trip, with 'name', 'checkin', 'checkout', and 'details' for each hotel.  
+                        - 'flights' as an array of flights with 'departure', 'arrival', 'airline', 'flightNumber', and 'details'.  
+
                       ` 
             }),
           });
