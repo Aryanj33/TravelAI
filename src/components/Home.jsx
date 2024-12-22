@@ -26,21 +26,86 @@ const navigate = useNavigate();
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ 
-              prompt: `Plan an itinerary for ${destination}, departing from ${from}. 
-                      Travel dates: ${startDate} to ${endDate}. 
-                      Include:
-                      - Flight options
-                      - Weather forecast
-                      - Hotel recommendations
-                      - Restaurant suggestions
+              prompt: `Plan a detailed travel itinerary for the following:
 
-                      Format the response as a JSON object with the following keys:  
-                        - 'title' for the trip name.  
-                        - 'days' as an array of day-wise activities. Each day should have 'day' and 'activities' keys. 
-                        activities key should be an array of activites  including the 'time', 'activity' and 'details'
-                        - 'hotels' as an array of hotels for the trip, with 'name', 'checkin', 'checkout', and 'details' for each hotel.  
-                        - 'flights' as an array of flights with 'departure', 'arrival', 'airline', 'flightNumber', and 'details'.  
+                        - Destination: ${destination}
+                        - Departure city: ${from}
+                        - Travel dates: ${startDate} to ${endDate}
 
+                        ### Requirements:
+                        1. **Itinerary Overview**:
+                        - Title for the trip (e.g., "Trip to Paris").
+
+                        2. **Daily Plan**:
+                        - For each day, provide:
+                            - Day number.
+                            - Activities in the format: 
+                            {
+                                time: "Time in HH:MM AM/PM format",
+                                activity: "Short activity name",
+                                details: "Detailed description of the activity"
+                            }
+
+                        3. **Accommodation Details**:
+                        - List recommended hotels with:
+                            - Name.
+                            - Check-in and check-out dates.
+                            - Details (e.g., location, amenities).
+                            - price est
+
+                        4. **Flight Details**:
+                        - Include flight options with:
+                            - Airline name.
+                            - Flight number.
+                            - Departure time.
+                            - Arrival time.
+                            - Additional details.
+                            - price est
+
+                        ### Response Format:
+                        Respond as a **valid JSON object** with this exact schema:
+
+                        {
+                        "title": "Trip Title",
+                        "days": [
+                            {
+                            "day": 1,
+                            "activities": [
+                                {
+                                "time": "9:00 AM",
+                                "activity": "Visit Eiffel Tower",
+                                "details": "Tickets included; duration 2 hours."
+                                },
+                                ...
+                            ]
+                            },
+                            ...
+                        ],
+                        "hotels": [
+                            {
+                            "name": "Hotel Name",
+                            "checkin": "YYYY-MM-DD",
+                            "checkout": "YYYY-MM-DD",
+                            "details": "Located near attractions; free breakfast included."
+                            },
+                            ...
+                        ],
+                        "flights": [
+                            {
+                            "airline": "Airline Name",
+                            "flightNumber": "Flight Number",
+                            "departure": "YYYY-MM-DDTHH:mm",
+                            "arrival": "YYYY-MM-DDTHH:mm",
+                            "details": "Non-stop; 2 checked bags included."
+                            },
+                            ...
+                        ]
+                        }
+
+                        ### Notes:
+                        - If data for any field is unavailable, return an empty array for that field.
+                        - Ensure the response adheres strictly to the JSON format without additional text or invalid keys.
+                        - Validate the response before sending.
                       ` 
             }),
           });
