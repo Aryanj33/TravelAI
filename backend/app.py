@@ -88,7 +88,7 @@ def get_gemini_response():
             json_string = response[start_index:end_index + 1]
         return jsonify({"response": json_string})
         
-        except Exception as e:
+    except Exception as e:
         print(f"Error generating response: {e}")
         return jsonify({"error": "Failed to generate response"}), 500
 
