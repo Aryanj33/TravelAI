@@ -11,6 +11,151 @@ const Home = () => {
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false); // Loading state
+
+
+  const handlePlanItineraryClick = async () => {
+      const from = document.querySelector('[name="from"]').value;
+      const destination = document.querySelector('[name="to"]').value;
+      const startDate = document.querySelector('[name="departure"]').value;
+      const endDate = document.querySelector('[name="returning"]').value || "N/A";  // Default to "N/A" if empty or undefined
+      if (!(from && to && departure && returning)) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+      try {
+          const response = await fetch("http://localhost:5000/get_gemini_response", { 
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 
+              prompt: `Plan a detailed travel itinerary for the following:
+
+                        - Destination: ${destination}
+                        - Departure city: ${from}
+                        - Travel dates: ${startDate} to ${endDate}
+
+                        ### Requirements:
+                        1. **Itinerary Overview**:
+                        - Title for the trip (e.g., "Trip to Paris").
+
+                        2. **Daily Plan**:
+                        - For each day, provide:
+                            - Day number.
+                            - Activities in the format: 
+                            {
+                                time: "Time in HH:MM AM/PM format",
+                                activity: "Short activity name",
+                                details: "Detailed description of the activity"
+                            }
+
+                        3. **Accommodation Details**:
+                        - List recommended hotels with:
+                            - Name.
+                            - Check-in and check-out dates.
+                            - Details (e.g., location, amenities).
+                            - price est in rupees
+
+                        4. **Flight Details**:
+                        - Include flight options with:
+                            - Airline name.
+                            - Flight number.
+                            - Departure time.
+                            - Arrival time.
+                            - Additional details.
+                            - price est in rupees
+                        
+                        5. **Train Details**
+                        - Include train options with:
+                            - train name.
+                            - departure time 
+                            - arrival time
+                            - additional details 
+                            - price est in rupees 
+
+                        ### Response Format:
+                        Respond as a **valid JSON object** with this exact schema:
+
+                        {
+                        "title": "Trip Title",
+                        "days": [
+                            {
+                            "day": 1,
+                            "activities": [
+                                {
+                                "time": "9:00 AM",
+                                "activity": "Visit Eiffel Tower",
+                                "details": "Tickets included; duration 2 hours."
+                                },
+                                ...
+                            ]
+                            },
+                            ...
+                        ],
+                        "hotels": [
+                            {
+                            "name": "Hotel Name",
+                            "checkin": "YYYY-MM-DD",
+                            "checkout": "YYYY-MM-DD",
+                            "details": "Located near attractions; free breakfast included."
+                            "price": "estimated price"
+                            },
+                            ...
+                        ],
+                        "flights": [
+                            {
+                            "airline": "Airline Name",
+                            "flightNumber": "Flight Number",
+                            "departure": "YYYY-MM-DDTHH:mm",
+                            "arrival": "YYYY-MM-DDTHH:mm",
+                            "details": "Non-stop; 2 checked bags included."
+                            "price": "estimated price"
+                            },
+                            ...
+                        ],
+                        "trains": [
+                            {
+                            "name": "train Name",
+                            "departure": "YYYY-MM-DDTHH:mm",
+                            "arrival": "YYYY-MM-DDTHH:mm",
+                            "details": "Non-stop; 2 checked bags included."
+                            "price": "estimated price"
+                            },
+                            ...
+                        ]
+                        }
+
+                        ### Notes:
+                        - If data for any field is unavailable, return an empty array for that field.
+                        - Ensure the response adheres strictly to the JSON format without additional text or invalid keys.
+                        - Validate the response before sending.
+                      ` 
+            }),
+          });
+        
+
+          // Log the response to debug
+          console.log("Response status:", response.status);
+          const responseData = await response.json();
+          console.log("Response body:", responseData);
+
+          if (!response.ok) {
+              throw new Error("Failed to fetch itinerary");
+          }
+
+          const itineraryData = responseData.response; // Assuming 'response' contains the itinerary
+          console.log("Itinerary Data:", itineraryData);
+
+          // Navigate with the itinerary data
+          navigate("/itinerary", { state: { itinerary: itineraryData } });
+
+      } catch (error) {
+          console.error("Error planning itinerary:", error);
+          alert("Failed to generate itinerary. Please try again.");
+      }
+  };    }
+  
+
   const [formData, setFormData] = useState({
     from: '',
     to: '',
@@ -22,8 +167,11 @@ const Home = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({ ...formData, [name]: value });
   };
+
+
 
   const handleSwap = () => {
     setFormData(prevState => ({
