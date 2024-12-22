@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { Oval } from 'react-loader-spinner';
 import './Home.css';
 import TopDestinations from './TopDestinations';
 import logo from '../assets/logo2.png';
@@ -8,129 +9,8 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
 
-const navigate = useNavigate();
-
-  const handlePlanItineraryClick = async () => {
-      const from = document.querySelector('[name="from"]').value;
-      const destination = document.querySelector('[name="to"]').value;
-      const startDate = document.querySelector('[name="departure"]').value;
-      const endDate = document.querySelector('[name="return"]').value || "N/A";  // Default to "N/A" if empty or undefined
-      if (!(from && destination && startDate && endDate)) {
-        alert("Please fill in all required fields.");
-        return;
-      }
-      try {
-          const response = await fetch("http://localhost:5000/get_gemini_response", { 
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ 
-              prompt: `Plan a detailed travel itinerary for the following:
-
-                        - Destination: ${destination}
-                        - Departure city: ${from}
-                        - Travel dates: ${startDate} to ${endDate}
-
-                        ### Requirements:
-                        1. **Itinerary Overview**:
-                        - Title for the trip (e.g., "Trip to Paris").
-
-                        2. **Daily Plan**:
-                        - For each day, provide:
-                            - Day number.
-                            - Activities in the format: 
-                            {
-                                time: "Time in HH:MM AM/PM format",
-                                activity: "Short activity name",
-                                details: "Detailed description of the activity"
-                            }
-
-                        3. **Accommodation Details**:
-                        - List recommended hotels with:
-                            - Name.
-                            - Check-in and check-out dates.
-                            - Details (e.g., location, amenities).
-                            - price est
-
-                        4. **Flight Details**:
-                        - Include flight options with:
-                            - Airline name.
-                            - Flight number.
-                            - Departure time.
-                            - Arrival time.
-                            - Additional details.
-                            - price est
-
-                        ### Response Format:
-                        Respond as a **valid JSON object** with this exact schema:
-
-                        {
-                        "title": "Trip Title",
-                        "days": [
-                            {
-                            "day": 1,
-                            "activities": [
-                                {
-                                "time": "9:00 AM",
-                                "activity": "Visit Eiffel Tower",
-                                "details": "Tickets included; duration 2 hours."
-                                },
-                                ...
-                            ]
-                            },
-                            ...
-                        ],
-                        "hotels": [
-                            {
-                            "name": "Hotel Name",
-                            "checkin": "YYYY-MM-DD",
-                            "checkout": "YYYY-MM-DD",
-                            "details": "Located near attractions; free breakfast included."
-                            },
-                            ...
-                        ],
-                        "flights": [
-                            {
-                            "airline": "Airline Name",
-                            "flightNumber": "Flight Number",
-                            "departure": "YYYY-MM-DDTHH:mm",
-                            "arrival": "YYYY-MM-DDTHH:mm",
-                            "details": "Non-stop; 2 checked bags included."
-                            },
-                            ...
-                        ]
-                        }
-
-                        ### Notes:
-                        - If data for any field is unavailable, return an empty array for that field.
-                        - Ensure the response adheres strictly to the JSON format without additional text or invalid keys.
-                        - Validate the response before sending.
-                      ` 
-            }),
-          });
-
-          // Log the response to debug
-          console.log("Response status:", response.status);
-          const responseData = await response.json();
-          console.log("Response body:", responseData);
-
-          if (!response.ok) {
-              throw new Error("Failed to fetch itinerary");
-          }
-
-          const itineraryData = responseData.response; // Assuming 'response' contains the itinerary
-          console.log("Itinerary Data:", itineraryData);
-
-          // Navigate with the itinerary data
-          navigate("/itinerary", { state: { itinerary: itineraryData } });
-
-      } catch (error) {
-          console.error("Error planning itinerary:", error);
-          alert("Failed to generate itinerary. Please try again.");
-      }
-  };    
-  
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false); // Loading state
   const [formData, setFormData] = useState({
     from: '',
     to: '',
@@ -156,13 +36,123 @@ const navigate = useNavigate();
     }));
   };
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1
-  };
+  const handlePlanItineraryClick = async () => {
+    const { from, to, departure, return: returnDate } = formData;
+    const endDate = returnDate || "N/A";  // Default to "N/A" if empty or undefined
+    
+    if (!(from && to && departure && endDate)) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    setIsLoading(true); // Start loading animation
+    
+    try {
+      const response = await fetch("http://localhost:5000/get_gemini_response", { 
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          prompt: `Plan a detailed travel itinerary for the following:
+
+                    - Destination: ${to}
+                    - Departure city: ${from}
+                    - Travel dates: ${departure} to ${endDate}
+
+                    ### Requirements:
+                    1. **Itinerary Overview**:
+                    - Title for the trip (e.g., "Trip to Paris").
+
+                    2. **Daily Plan**:
+                    - For each day, provide:
+                        - Day number.
+                        - Activities in the format: 
+                        {
+                            time: "Time in HH:MM AM/PM format",
+                            activity: "Short activity name",
+                            details: "Detailed description of the activity"
+                        }
+
+                    3. **Accommodation Details**:
+                    - List recommended hotels with:
+                        - Name.
+                        - Check-in and check-out dates.
+                        - Details (e.g., location, amenities).
+                        - price est
+
+                    4. **Flight Details**:
+                    - Include flight options with:
+                        - Airline name.
+                        - Flight number.
+                        - Departure time.
+                        - Arrival time.
+                        - Additional details.
+                        - price est
+
+                    ### Response Format:
+                    Respond as a **valid JSON object** with this exact schema:
+
+                    {
+                    "title": "Trip Title",
+                    "days": [
+                        {
+                        "day": 1,
+                        "activities": [
+                            {
+                            "time": "9:00 AM",
+                            "activity": "Visit Eiffel Tower",
+                            "details": "Tickets included; duration 2 hours."
+                            },
+                            ...
+                        ]
+                        },
+                        ...
+                    ],
+                    "hotels": [
+                        {
+                        "name": "Hotel Name",
+                        "checkin": "YYYY-MM-DD",
+                        "checkout": "YYYY-MM-DD",
+                        "details": "Located near attractions; free breakfast included."
+                        },
+                        ...
+                    ],
+                    "flights": [
+                        {
+                        "airline": "Airline Name",
+                        "flightNumber": "Flight Number",
+                        "departure": "YYYY-MM-DDTHH:mm",
+                        "arrival": "YYYY-MM-DDTHH:mm",
+                        "details": "Non-stop; 2 checked bags included."
+                        },
+                        ...
+                    ]
+                    }
+
+                    ### Notes:
+                    - If data for any field is unavailable, return an empty array for that field.
+                    - Ensure the response adheres strictly to the JSON format without additional text or invalid keys.
+                    - Validate the response before sending.
+                  ` 
+        }),
+      });
+
+      const responseData = await response.json();
+      if (!response.ok) {
+        throw new Error("Failed to fetch itinerary");
+      }
+
+      const itineraryData = responseData.response; // Assuming 'response' contains the itinerary
+      navigate("/itinerary", { state: { itinerary: itineraryData } });
+
+    } catch (error) {
+      console.error("Error planning itinerary:", error);
+      alert("Failed to generate itinerary. Please try again.");
+    } finally {
+      setIsLoading(false); // Stop loading animation
+    }
+  };    
 
   return (
     <>
@@ -184,8 +174,8 @@ const navigate = useNavigate();
         <section 
           style={{
             backgroundImage: `url(${backkkgg})`,
-            backgroundSize: "cover", // Ensures the image covers the entire area
-            backgroundRepeat: "no-repeat", // Prevents the image from repeating
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
           }}
         >
           <section className="hero">
@@ -193,6 +183,21 @@ const navigate = useNavigate();
             <p><b>Create a personalized travel itinerary for any location around the world!</b></p>
           </section>
           
+          {isLoading && (
+            <div className="planning-overlay active">
+              <div className="planning-content">
+                <Oval
+                  height={80}
+                  width={80}
+                  color="blue"
+                  visible={true}
+                  ariaLabel='oval-loading'
+                />
+                <p>Planning your itinerary...</p>
+              </div>
+            </div>
+          )}
+
           <div className="flight-search-container">
             <div className="trip-type">
               <label><input type="radio" name="trip" defaultChecked /> <span>One-way</span></label>
@@ -201,30 +206,29 @@ const navigate = useNavigate();
             </div>
 
             <div className="search-fields">
-            <div className="field">
-             <label>From</label>
-            <input
-          type="text"
-          name="from"
-          placeholder="Enter city or airport"
-          value={formData.from}
-          onChange={handleInputChange}
-        />
-      </div>
-      <span className="swap-btn" onClick={handleSwap}>
-        ⇄
-      </span>
-      <div className="field">
-        <label>To</label>
-        <input
-          type="text"
-          name="to"
-          placeholder="Enter city or airport"
-          value={formData.to}
-          onChange={handleInputChange}
-        />
-      </div>
-    
+              <div className="field">
+                <label>From</label>
+                <input
+                  type="text"
+                  name="from"
+                  placeholder="Enter city or airport"
+                  value={formData.from}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <span className="swap-btn" onClick={handleSwap}>
+                ⇄
+              </span>
+              <div className="field">
+                <label>To</label>
+                <input
+                  type="text"
+                  name="to"
+                  placeholder="Enter city or airport"
+                  value={formData.to}
+                  onChange={handleInputChange}
+                />
+              </div>
               <div className="field">
                 <label>Departure</label>
                 <input type="date" name="departure" value={formData.departure} onChange={handleInputChange} />
@@ -244,7 +248,7 @@ const navigate = useNavigate();
                 </select>
               </div>
               <div className="field">
-                <label>Purpose of Visit</label>
+                <label>Flight Mode</label>
                 <select name="purposeOfVisit" value={formData.purposeOfVisit} onChange={handleInputChange}>
                   <option value="">Select</option>
                   <option value="Economy">Economy</option>
