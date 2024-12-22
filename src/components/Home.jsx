@@ -14,8 +14,8 @@ const navigate = useNavigate();
       const from = document.querySelector('[name="from"]').value;
       const destination = document.querySelector('[name="to"]').value;
       const startDate = document.querySelector('[name="departure"]').value;
-      const endDate = document.querySelector('[name="return"]').value || "N/A";  // Default to "N/A" if empty or undefined
-      if (!(from && destination && startDate && endDate)) {
+      const endDate = document.querySelector('[name="returning"]').value || "N/A";  // Default to "N/A" if empty or undefined
+      if (!(from && to && departure && returning)) {
         alert("Please fill in all required fields.");
         return;
       }
@@ -44,6 +44,7 @@ const navigate = useNavigate();
                       ` 
             }),
           });
+        
 
           // Log the response to debug
           console.log("Response status:", response.status);
@@ -64,7 +65,7 @@ const navigate = useNavigate();
           console.error("Error planning itinerary:", error);
           alert("Failed to generate itinerary. Please try again.");
       }
-  };    
+  };    }
   
   const [formData, setFormData] = useState({
     from: '',
@@ -77,7 +78,14 @@ const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const datePattern = /^\d{2}-\d{2}-\d{4}$/;
+    if (name === "departure" || name === "return") {
+      if (value === "" || datePattern.test(value)) {
+        // Update formData only if the format is valid or the field is cleared
+        setFormData({ ...formData, [name]: value });
+      }
+    } else {
+      setFormData({ ...formData, [name]: value });
   };
 
   const handleSwap = () => {
@@ -162,11 +170,13 @@ const navigate = useNavigate();
     
               <div className="field">
                 <label>Departure</label>
-                <input type="date" name="departure" value={formData.departure} onChange={handleInputChange} />
+                <input type="date" name="departure" value={formData.departure}  placeholder="dd-mm-yyyy"
+                  min={new Date().toISOString().split("T")[0]}   onChange={handleInputChange} />
               </div>
               <div className="field">
                 <label>Return</label>
-                <input type="date" name="return" placeholder="Optional" value={formData.return} onChange={handleInputChange} />
+                <input type="date" name="return" placeholder="dd-mm-yyyy" value={formData.return}  
+                 min={formData.departure || new Date().toISOString().split("T")[0]}   onChange={handleInputChange} />
               </div>
               <div className="field">
                 <label>Trip Buddy</label>
@@ -338,4 +348,4 @@ const navigate = useNavigate();
   );
 };
 
-export default Home;
+export default Home
