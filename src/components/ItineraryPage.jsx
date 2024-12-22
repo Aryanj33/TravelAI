@@ -95,8 +95,7 @@ const ItineraryPage = () => {
         )}
 
         <h3>Train Details</h3>
-        {trains.length > 0 ? (
-        trains.map((train, index) => (
+        {trains.map((train, index) => (
             <div key={index} className="train-section">
             <p><strong>{train.name}</strong></p>
             <p>Departure: {train.departure}</p>
@@ -104,10 +103,7 @@ const ItineraryPage = () => {
             <p>{train.details}</p>
             <p>{train.price}</p>
             </div>
-        ))
-        ) : (
-        <p>No train details available.</p>
-        )}
+        ))}
 
 
         </section>

@@ -14,8 +14,8 @@ const navigate = useNavigate();
       const from = document.querySelector('[name="from"]').value;
       const destination = document.querySelector('[name="to"]').value;
       const startDate = document.querySelector('[name="departure"]').value;
-      const endDate = document.querySelector('[name="returning"]').value || "N/A";  // Default to "N/A" if empty or undefined
-      if (!(from && to && departure && returning)) {
+      const endDate = document.querySelector('[name="return"]').value || "N/A";  // Default to "N/A" if empty or undefined
+      if (!(from && destination && startDate && endDate)) {
         alert("Please fill in all required fields.");
         return;
       }
