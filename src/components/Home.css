@@ -115,7 +115,7 @@ body {
 
 /* Hero Section */
 .hero {
-    /* background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('travel-background.jpg'); */
+    
     background-size: cover;
     background-position: center;
     /* height: 80vh; */
@@ -136,7 +136,7 @@ body {
     margin-bottom: 10px; /* Adjusted spacing */
     margin-top: 90px; /* Adjusted spacing */
     font-weight: 700; /* Made text bold */
-    /* text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.7); Stronger shadow for depth */
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.7);
     color: #fdfdfd; /* Bright text color to contrast the background */
     /* background: linear-gradient(to right, #f4a261, #e76f51); Gradient text for a striking effect */
    

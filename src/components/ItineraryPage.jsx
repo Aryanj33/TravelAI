@@ -41,7 +41,12 @@ const ItineraryPage = () => {
       <main className="main-content">
         <section id="itinerary">
           <h2>Your Itinerary</h2>
-          <pre>{itineraryData || "Fetching itinerary..."}</pre>
+          <pre className="itinerary-display" style={{
+    backgroundColor: "#f8f9fa",
+    color: "#2c3e50",
+    padding: "1.5rem",
+    borderRadius: "10px",
+  }}> {itineraryData || "Fetching itinerary..."}</pre>
         </section>
       </main>
     </div>
