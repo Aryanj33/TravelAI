@@ -130,7 +130,7 @@ const navigate = useNavigate();
           console.error("Error planning itinerary:", error);
           alert("Failed to generate itinerary. Please try again.");
       }
-  };    }
+  };    
   
   const [formData, setFormData] = useState({
     from: '',
@@ -143,15 +143,15 @@ const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
     const datePattern = /^\d{2}-\d{2}-\d{4}$/;
-    if (name === "departure" || name === "return") {
-      if (value === "" || datePattern.test(value)) {
-        // Update formData only if the format is valid or the field is cleared
+
+    if ((name === "departure" || name === "return") && (!value || datePattern.test(value))) {
         setFormData({ ...formData, [name]: value });
-      }
-    } else {
-      setFormData({ ...formData, [name]: value });
-  };
+    
+    }
+};
+
 
   const handleSwap = () => {
     setFormData(prevState => ({
