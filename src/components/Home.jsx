@@ -51,7 +51,7 @@ const navigate = useNavigate();
                             - Name.
                             - Check-in and check-out dates.
                             - Details (e.g., location, amenities).
-                            - price est
+                            - price est in rupees
 
                         4. **Flight Details**:
                         - Include flight options with:
@@ -60,7 +60,15 @@ const navigate = useNavigate();
                             - Departure time.
                             - Arrival time.
                             - Additional details.
-                            - price est
+                            - price est in rupees
+                        
+                        5. **Train Details**
+                        - Include train options with:
+                            - train name.
+                            - departure time 
+                            - arrival time
+                            - additional details 
+                            - price est in rupees 
 
                         ### Response Format:
                         Respond as a **valid JSON object** with this exact schema:
@@ -87,6 +95,7 @@ const navigate = useNavigate();
                             "checkin": "YYYY-MM-DD",
                             "checkout": "YYYY-MM-DD",
                             "details": "Located near attractions; free breakfast included."
+                            "price": "estimated price"
                             },
                             ...
                         ],
@@ -97,6 +106,17 @@ const navigate = useNavigate();
                             "departure": "YYYY-MM-DDTHH:mm",
                             "arrival": "YYYY-MM-DDTHH:mm",
                             "details": "Non-stop; 2 checked bags included."
+                            "price": "estimated price"
+                            },
+                            ...
+                        ],
+                        "trains": [
+                            {
+                            "name": "train Name",
+                            "departure": "YYYY-MM-DDTHH:mm",
+                            "arrival": "YYYY-MM-DDTHH:mm",
+                            "details": "Non-stop; 2 checked bags included."
+                            "price": "estimated price"
                             },
                             ...
                         ]

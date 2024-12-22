@@ -13,7 +13,7 @@ const ItineraryPage = () => {
   }
   const itineraryData = JSON.parse(tempData);
   console.log(itineraryData);
-  const { title, days, hotels, flights } = itineraryData;
+  const { title, days, hotels, flights, trains } = itineraryData;
   console.log(title);
   console.log(days);
   console.log(hotels);
@@ -64,25 +64,52 @@ const ItineraryPage = () => {
             </div>
           ))}
 
-          <h3>Hotel Details</h3>
-          {hotels.map((hotel, index) => (
+        <h3>Hotel Details</h3>
+        {hotels.length > 0 ? (
+        hotels.map((hotel, index) => (
             <div key={index} className="hotel-section">
-              <p><strong>{hotel.name}</strong></p>
-              <p>Check-in: {hotel.checkin}</p>
-              <p>Check-out: {hotel.checkout}</p>
-              <p>{hotel.details}</p>
+            <p><strong>{hotel.name}</strong></p>
+            <p>Check-in: {hotel.checkin}</p>
+            <p>Check-out: {hotel.checkout}</p>
+            <p>{hotel.details}</p>
+            <p>{hotel.price}</p>
             </div>
-          ))}
+        ))
+        ) : (
+        <p>No hotel details available.</p>
+        )}
 
-          <h3>Flight Details</h3>
-          {flights.map((flight, index) => (
+        <h3>Flight Details</h3>
+        {flights.length > 0 ? (
+        flights.map((flight, index) => (
             <div key={index} className="flight-section">
-              <p><strong>{flight.airline}</strong> - Flight {flight.flightNumber}</p>
-              <p>Departure: {flight.departure}</p>
-              <p>Arrival: {flight.arrival}</p>
-              <p>{flight.details}</p>
+            <p><strong>{flight.airline}</strong> - Flight {flight.flightNumber}</p>
+            <p>Departure: {flight.departure}</p>
+            <p>Arrival: {flight.arrival}</p>
+            <p>{flight.details}</p>
+            <p>{flight.price}</p>
             </div>
-          ))}
+        ))
+        ) : (
+        <p>No flight details available.</p>
+        )}
+
+        <h3>Train Details</h3>
+        {trains.length > 0 ? (
+        trains.map((train, index) => (
+            <div key={index} className="train-section">
+            <p><strong>{train.name}</strong></p>
+            <p>Departure: {train.departure}</p>
+            <p>Arrival: {train.arrival}</p>
+            <p>{train.details}</p>
+            <p>{train.price}</p>
+            </div>
+        ))
+        ) : (
+        <p>No train details available.</p>
+        )}
+
+
         </section>
       </main>
     </div>
