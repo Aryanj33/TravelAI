@@ -79,7 +79,14 @@ def get_gemini_response():
     try:
         result = model.generate_content(prompt)
         response = result.text
-        return jsonify({"response": response})
+
+        start_index = response.find("{")
+        end_index = response.rfind("}")
+        
+        # If both are found, slice the string
+        if start_index != -1 and end_index != -1:
+            json_string = response[start_index:end_index + 1]
+        return jsonify({"response": json_string})
     except Exception as e:
         print(f"Error generating response: {e}")
         return jsonify({"error": "Failed to generate response"}), 500

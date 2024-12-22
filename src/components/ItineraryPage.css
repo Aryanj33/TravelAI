@@ -217,8 +217,7 @@
       margin: 0.75rem;
     }
   }
-  
-  .hotel-section, .flight-section {
+  .day-section, .hotel-section, .flight-section {
   margin: 20px 0;
   padding: 15px;
   background-color: #f9f9f9;
@@ -226,11 +225,16 @@
   border-radius: 5px;
 }
 
-.hotel-section p, .flight-section p {
-  margin: 5px 0;
+.day-section h3, .hotel-section p, .flight-section p {
+  margin: 10px 0;
 }
 
-.flight-section strong, .hotel-section strong {
+.activity-item strong {
+  color: #2c3e50;
   font-size: 1.1em;
-  color: #333;
+}
+
+.activity-item p {
+  margin: 5px 0;
+  color: #555;
 }

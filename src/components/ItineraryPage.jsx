@@ -6,27 +6,34 @@ import logo from '../assets/logo2.png';
 
 const ItineraryPage = () => {
   const location = useLocation();
-  const itineraryData = location.state?.itinerary;
+  const tempData = location.state?.itinerary;
 
-  return (
+  if (!tempData) {
+    return <p>No itinerary data available</p>;
+  }
+  const itineraryData = JSON.parse(tempData);
+  console.log(itineraryData);
+  const { title, days, hotels, flights } = itineraryData;
+  console.log(title);
+  console.log(days);
+  console.log(hotels);
+  console.log(flights);
   
+  return (
     <div className="itinerary-page">
-       <header className="navbar">
+      <header className="navbar">
         <div className="logo">
           <img src={logo} alt="Travel AI Logo" />
           <h1>Travel AI</h1>
         </div>
         <nav>
           <ul>
-            {/* <li><a href="#features">Features</a></li> */}
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/">Login</Link></li>
-            
-
+            <li><Link to="/login">Login</Link></li>
           </ul>
         </nav>
       </header>
-      {/* Sidebar */}
+
       <aside className="sidebar">
         <nav>
           <ul>
@@ -40,13 +47,42 @@ const ItineraryPage = () => {
 
       <main className="main-content">
         <section id="itinerary">
-          <h2>Your Itinerary</h2>
-          <pre className="itinerary-display" style={{
-    backgroundColor: "#f8f9fa",
-    color: "#2c3e50",
-    padding: "1.5rem",
-    borderRadius: "10px",
-  }}> {itineraryData || "Fetching itinerary..."}</pre>
+          <h2>{title}</h2>
+
+          <h3>Daily Activities</h3>
+          {days.map((day, index) => (
+            <div key={index} className="day-section">
+              <h3>Day {day.day}</h3>
+              <ul>
+                {day.activities.map((activity, idx) => (
+                  <li key={idx} className="activity-item">
+                    <strong>{activity.time}</strong> - {activity.activity}
+                    <p>{activity.details}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          <h3>Hotel Details</h3>
+          {hotels.map((hotel, index) => (
+            <div key={index} className="hotel-section">
+              <p><strong>{hotel.name}</strong></p>
+              <p>Check-in: {hotel.checkin}</p>
+              <p>Check-out: {hotel.checkout}</p>
+              <p>{hotel.details}</p>
+            </div>
+          ))}
+
+          <h3>Flight Details</h3>
+          {flights.map((flight, index) => (
+            <div key={index} className="flight-section">
+              <p><strong>{flight.airline}</strong> - Flight {flight.flightNumber}</p>
+              <p>Departure: {flight.departure}</p>
+              <p>Arrival: {flight.arrival}</p>
+              <p>{flight.details}</p>
+            </div>
+          ))}
         </section>
       </main>
     </div>
