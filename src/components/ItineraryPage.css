@@ -127,23 +127,24 @@ background-color: #2c3e50;
   margin: 1.5rem 0; /* Increased spacing between items */
 }
 
-.sidebar nav ul li a {
-  color: white;
+.sidebar button {
+  all: unset; /* Resets all button styles */
+  cursor: pointer;
+  color: white; /* Matches the text color of the sidebar */
+  font-size: 1.7rem; /* Adjust the size as needed */
+  font-weight: bold;
   text-decoration: none;
-  font-size: 1.7rem; /* Increased font size */
-  display: block;
-  padding: 0.75rem; /* Increased padding */
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+  padding: 0.5rem 1rem; /* Adds some spacing for a clickable area */
+  transition: all 0.3s ease-in-out;
+  display: block; /* Ensures the buttons stack like links */
 }
 
-.sidebar nav ul li a i {
-  margin-right: 10px;
+.sidebar button:hover {
+  color: #f4a261; /* Matches the hover effect of your navbar links */
+  background-color: rgba(255, 255, 255, 0.2); /* Subtle hover background */
+  border-radius: 5px; /* Optional for a rounded look */
 }
 
-.sidebar nav ul li a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
 
 /* Main Content */
 .main-content {

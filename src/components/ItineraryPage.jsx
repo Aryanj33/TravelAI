@@ -134,15 +134,16 @@ const ItineraryPage = () => {
       </header>
 
       <aside className="sidebar">
-        <nav>
-          <ul>
-            <li><a href="#itinerary">Itinerary</a></li>
-            <li><a href="#weather">Weather</a></li>
-            <li><a href="#flights">Flights</a></li>
-            <li><a href="#hotels">Hotels</a></li>
-          </ul>
-        </nav>
-      </aside>
+  <nav>
+    <ul>
+      <li><button onClick={() => document.getElementById('itinerary').scrollIntoView({ behavior: 'smooth' })}>Itinerary</button></li>
+      <li><button onClick={() => document.getElementById('weather').scrollIntoView({ behavior: 'smooth' })}>Weather</button></li>
+      <li><button onClick={() => document.getElementById('flights').scrollIntoView({ behavior: 'smooth' })}>Flights</button></li>
+      <li><button onClick={() => document.getElementById('hotels').scrollIntoView({ behavior: 'smooth' })}>Hotels</button></li>
+    </ul>
+  </nav>
+</aside>
+
 
       <main className="main-content">
         <section id="itinerary">
