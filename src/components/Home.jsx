@@ -153,6 +153,7 @@ const Home = () => {
                         "flightNumber": "Flight Number",
                         "departure": "YYYY-MM-DDTHH:mm",
                         "arrival": "YYYY-MM-DDTHH:mm",
+                        "price": in INR,
                         "details": "Non-stop; 2 checked bags included."
                         },
                         ...
