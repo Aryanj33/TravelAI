@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import "./ItineraryPage.css";
 import { Link } from "react-router-dom";
 import logo from '../assets/logo2.png';
-import { Card, CardContent, CardMedia, Typography, Grid } from "@mui/material";
 
 const ItineraryPage = () => {
   const location = useLocation();
@@ -22,6 +21,7 @@ const ItineraryPage = () => {
   const [hotels, setHotels] = useState([]);
   const [loadingHotels, setLoadingHotels] = useState(false);
 
+  // Fetch GeoId
   const fetchGeoId = async (place) => {
     const urlGeoId = `https://tripadvisor-com1.p.rapidapi.com/auto-complete?query=${place}`;
     const optionsGeoId = {
@@ -42,6 +42,7 @@ const ItineraryPage = () => {
     }
   };
 
+  // Fetch Hotels
   const fetchHotels = async (place) => {
     setLoadingHotels(true);
     const geoId = await fetchGeoId(place);
@@ -69,9 +70,9 @@ const ItineraryPage = () => {
         name: hotel.cardTitle?.string || 'N/A',
         price: hotel.commerceInfo?.priceForDisplay?.string || 'N/A',
         details: hotel.descriptiveText || 'No description available.',
-        image: hotel.photo?.images?.medium?.url || 'https://via.placeholder.com/150',
       }));
       setHotels(extractedHotels);
+      console.log(extractedHotels);
     } catch (error) {
       console.error('Error fetching hotels:', error);
       setHotels([]);
@@ -80,6 +81,7 @@ const ItineraryPage = () => {
     }
   };
 
+  // Fetch hotels on component mount
   useEffect(() => {
     fetchHotels(destination);
   }, []);
@@ -139,95 +141,20 @@ const ItineraryPage = () => {
             </div>
           ))}
 
-<h3>Hotel Details</h3>
-{loadingHotels ? (
-  <p>Loading hotels...</p>
-) : hotels.length > 0 ? (
-  <Grid container spacing={2}>
-    {hotels.map((hotel, index) => (
-      <Grid
-        item
-        xs={12}
-        md={6}
-        lg={4}
-        key={index}
-        style={{
-          transition: "transform 0.3s ease, box-shadow 0.3s ease",
-          borderRadius: "10px",
-          overflow: "hidden",
-          backgroundColor: "#ffffff",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          marginBottom: "20px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            height: "100%",
-          }}
-        >
-          <img
-            src={hotel.image || "https://via.placeholder.com/150"}
-            alt={hotel.name}
-            style={{
-              width: "100%",
-              height: "200px",
-              objectFit: "cover",
-              borderBottom: "3px solid #007bff",
-            }}
-          />
-          <div
-            style={{
-              padding: "20px",
-              textAlign: "left",
-            }}
-          >
-            <h4
-              style={{
-                fontSize: "1.8rem",
-                fontWeight: "bold",
-                color: "#1a4781",
-                marginBottom: "10px",
-              }}
-            >
-              {hotel.name}
-            </h4>
-            <p
-              style={{
-                fontSize: "1.4rem",
-                color: "#555",
-                marginBottom: "15px",
-              }}
-            >
-              {hotel.details}
-            </p>
-            <p
-              style={{
-                fontSize: "1.6rem",
-                fontWeight: "bold",
-                color: "#2c3e50",
-              }}
-            >
-              Price:{" "}
-              <span
-                style={{
-                  color: "#007bff",
-                }}
-              >
-                {hotel.price}
-              </span>{" "}
-              / night
-            </p>
-          </div>
-        </div>
-      </Grid>
-    ))}
-  </Grid>
-) : (
-  <p>No hotel details available.</p>
-)}
+          <h3>Hotel Details</h3>
+          {loadingHotels ? (
+            <p>Loading hotels...</p>
+          ) : hotels.length > 0 ? (
+            hotels.map((hotel, index) => (
+              <div key={index} className="hotel-section">
+                <h4><strong>{hotel.name}</strong></h4>
+                <p>Price: {hotel.price} / night</p>
+                <p>{hotel.details}</p>
+              </div>
+            ))
+          ) : (
+            <p>No hotel details available.</p>
+          )}
         </section>
       </main>
     </div>
