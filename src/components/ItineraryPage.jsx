@@ -27,7 +27,7 @@ const ItineraryPage = () => {
     const optionsGeoId = {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': 'c09f6d065bmsh2afacd1b5392546p18c4c4jsn1068f7c21e19',
+        'x-rapidapi-key': '13aabcd016mshd15c47bf8a14d71p10f2dejsn583a12c514c7',
         'x-rapidapi-host': 'tripadvisor-com1.p.rapidapi.com',
       },
     };
@@ -58,7 +58,7 @@ const ItineraryPage = () => {
     const options = {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': 'c09f6d065bmsh2afacd1b5392546p18c4c4jsn1068f7c21e19',
+        'x-rapidapi-key': '13aabcd016mshd15c47bf8a14d71p10f2dejsn583a12c514c7',
         'x-rapidapi-host': 'tripadvisor-com1.p.rapidapi.com',
       },
     };
@@ -145,13 +145,24 @@ const ItineraryPage = () => {
           {loadingHotels ? (
             <p>Loading hotels...</p>
           ) : hotels.length > 0 ? (
-            hotels.map((hotel, index) => (
-              <div key={index} className="hotel-section">
-                <h4><strong>{hotel.name}</strong></h4>
-                <p>Price: {hotel.price} / night</p>
-                <p>{hotel.details}</p>
-              </div>
-            ))
+            <div className="hotel-cards-container">
+              {hotels.map((hotel, index) => (
+                <div key={index} className="hotel-card">
+                  <img
+                    src="https://via.placeholder.com/150"
+                    alt={`Image of ${hotel.name}`}
+                    className="hotel-image"
+                  />
+                  <div className="hotel-content">
+                    <h4 className="hotel-title">{hotel.name}</h4>
+                    <p className="hotel-description">{hotel.details}</p>
+                    <p className="hotel-price">
+                      Price: <span>{hotel.price}</span> / night
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : (
             <p>No hotel details available.</p>
           )}
