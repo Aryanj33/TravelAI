@@ -75,7 +75,7 @@ const ItineraryPage = () => {
         const photoUrl = photoTemplate ? photoTemplate.replace('{width}', 200).replace('{height}', 200) : 'https://via.placeholder.com/400x300';
         const usdPrice = hotel.commerceInfo?.priceForDisplay?.string || "N/A";
         const price = parseFloat(usdPrice.replace(/[^0-9.]/g, ""));  // Extract numeric value
-        const inrPrice = price*85;  // Convert to INR
+        const inrPrice = price * 85;  // Convert to INR
         return {
           name: hotel.cardTitle?.string || 'N/A',
           price: inrPrice,
@@ -83,7 +83,7 @@ const ItineraryPage = () => {
           image: photoUrl
         };
       });
-      
+
       setHotels(extractedHotels);
       console.log(extractedHotels);
     } catch (error) {
@@ -164,10 +164,9 @@ const ItineraryPage = () => {
               </div>
             ))}
           </Slider>
-        <br/><br/>
-        <h3>Weather Forecast & Packing Tips during your trip</h3>
-        {
-        <div className="day-section">
+
+          <h3>Weather Forecast & Packing Tips during your trip</h3>
+          <div className="day-section">
             <p className="activity-item"><strong>Average Temperature:</strong> {weather?.avgTemp || 'N/A'}</p>
             <p className="activity-item"><strong>Condition:</strong> {weather?.condition || 'N/A'}</p>
             <p className="activity-item"><strong>Sun Exposure:</strong> {weather?.sunExposure || 'Moderate'}</p>
@@ -176,49 +175,46 @@ const ItineraryPage = () => {
             <p className="activity-item"><strong>Humidity:</strong> {weather?.humidity || 'N/A'}</p>
             <p className="activity-item"><strong>UV INDEX:</strong> {weather?.uvIndex || 'N/A'}%</p>
             <p className="activity-item"><strong>Packing Tips:</strong> {weather?.packingTips || 'Pack light, bring sunscreen and a hat.'}</p>
-        </div>
-        }
+          </div>
 
-            <h3>Flight Details</h3>
-            {flights.length > 0 ? (
+          <h3>Flight Details</h3>
+          {flights.length > 0 ? (
             flights.map((flight, index) => (
-                <div key={index} className="flight-section">
+              <div key={index} className="flight-section">
                 <h4><strong>{flight.airline}</strong> - Flight {flight.flightNumber}</h4>
                 <p>Departure: {flight.departure}</p>
                 <p>Arrival: {flight.arrival}</p>
                 <p>{flight.details}</p>
                 <button className="add-to-cart-btn">Add to Cart</button>
-                </div>
+              </div>
             ))
-            ) : (
+          ) : (
             <p>No flights available</p>
-            )}
-
+          )}
 
           <h3>Hotel Details</h3>
           {loadingHotels ? (
             <p>Loading hotels...</p>
           ) : hotels.length > 0 ? (
             <div className="hotel-cards-container">
-    {hotels.map((hotel, index) => (
-        <div key={index} className="hotel-card">
-                    <img
-                        src={hotel.image}
-                        alt={`Image of ${hotel.name}`}
-                        className="hotel-image"
-                    />
-                    <div className="hotel-content">
-                        <h4 className="hotel-title">{hotel.name}</h4>
-                        <p className="hotel-description">{hotel.details}</p>
-                        <p className="hotel-price">
-                            Price: ₹ <span>{hotel.price}</span> / night
-                        </p>
-                        <button className="add-to-cart-btn">Add to Cart</button>
-                    </div>
+              {hotels.map((hotel, index) => (
+                <div key={index} className="hotel-card">
+                  <img
+                    src={hotel.image}
+                    alt={`Image of ${hotel.name}`}
+                    className="hotel-image"
+                  />
+                  <div className="hotel-content">
+                    <h4 className="hotel-title">{hotel.name}</h4>
+                    <p className="hotel-description">{hotel.details}</p>
+                    <p className="hotel-price">
+                      Price: ₹ <span>{hotel.price}</span> / night
+                    </p>
+                    <button className="add-to-cart-btn">Add to Cart</button>
+                  </div>
                 </div>
-            ))}
-        </div>
-
+              ))}
+            </div>
           ) : (
             <p>No hotel details available.</p>
           )}
