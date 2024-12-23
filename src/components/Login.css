@@ -22,14 +22,14 @@ body {
 .login-left {
   flex-grow: 1;
   height: 100vh;
-  background-color: #040404;
+  background-color: #0d0060;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .login-left img {
-  width: 400px;
+  width: 350px;
 }
 
 .login-right {
@@ -53,7 +53,7 @@ body {
 
 .login-logo {
   align-self: center;
-  padding-top: 50px;
+  padding-top: 40px;
 }
 
 .login-center {
@@ -62,7 +62,7 @@ body {
 }
 
 .login-logo img {
-  width: 100px;
+  width: 130px;
 }
 
 .login-center h2 {
