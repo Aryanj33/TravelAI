@@ -34,7 +34,6 @@ const ExpenditureSlider = () => {
   );
 };
 
-
 const Home = () => {
 
   const navigate = useNavigate();
@@ -106,14 +105,7 @@ const Home = () => {
                             details: "Detailed description of the activity"
                         }
 
-                    3. *Accommodation Details*:
-                    - List recommended hotels with:
-                        - Name.
-                        - Check-in and check-out dates.
-                        - Details (e.g., location, amenities).
-                        - price est
-
-                    4. *Flight Details*:
+                    3. *Flight Details*:
                     - Include flight options with:
                         - Airline name.
                         - Flight number.
@@ -138,15 +130,6 @@ const Home = () => {
                             },
                             ...
                         ]
-                        },
-                        ...
-                    ],
-                    "hotels": [
-                        {
-                        "name": "Hotel Name",
-                        "checkin": "YYYY-MM-DD",
-                        "checkout": "YYYY-MM-DD",
-                        "details": "Located near attractions; free breakfast included."
                         },
                         ...
                     ],
@@ -176,7 +159,7 @@ const Home = () => {
       }
 
       const itineraryData = responseData.response; // Assuming 'response' contains the itinerary
-      navigate("/itinerary", { state: { itinerary: itineraryData } });
+      navigate("/itinerary", { state: { itinerary: itineraryData, destination: to, checkIn: departure, checkOut: endDate } });
 
     } catch (error) {
       console.error("Error planning itinerary:", error);
