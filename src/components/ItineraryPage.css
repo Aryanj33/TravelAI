@@ -472,3 +472,55 @@
   }
 }
 
+.add-to-cart-btn {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none;
+    padding: 10px 20px; /* Padding for the button */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.add-to-cart-btn:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+.day-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .day-card h3 {
+    font-size: 2rem;
+    color: #1a4781;
+    margin-bottom: 10px;
+  }
+  
+  .day-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .day-card ul li {
+    margin: 10px 0;
+    font-size: 1.4rem;
+    color: #555;
+  }
+  
+  .slick-slide {
+    transform: scale(0.8);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .slick-center {
+    transform: scale(1.05);
+  }
