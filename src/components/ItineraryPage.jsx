@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { useLocation } from "react-router-dom";
 import "./ItineraryPage.css";
 import { Link } from "react-router-dom";
@@ -27,7 +30,7 @@ const ItineraryPage = () => {
     const optionsGeoId = {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': 'f754aec9aemsh03cf4475028b52ep10de59jsn05f87da892f9',
+        'x-rapidapi-key': '45ab2aae48msh8a0dd7519ac5120p12c1edjsnb72aac151f37',
         'x-rapidapi-host': 'tripadvisor-com1.p.rapidapi.com',
       },
     };
@@ -58,7 +61,7 @@ const ItineraryPage = () => {
     const options = {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': 'f754aec9aemsh03cf4475028b52ep10de59jsn05f87da892f9',
+        'x-rapidapi-key': '45ab2aae48msh8a0dd7519ac5120p12c1edjsnb72aac151f37',
         'x-rapidapi-host': 'tripadvisor-com1.p.rapidapi.com',
       },
     };
@@ -95,6 +98,25 @@ const ItineraryPage = () => {
     fetchHotels(destination);
   }, []);
 
+  // Slider settings for react-slick
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    centerMode: true,
+    centerPadding: "40px",
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          centerPadding: "20px",
+        },
+      },
+    ],
+  };
+
   return (
     <div className="itinerary-page">
       <header className="navbar">
@@ -126,19 +148,22 @@ const ItineraryPage = () => {
           <h2>{title}</h2>
 
           <h3>Daily Activities</h3>
-          {days.map((day, index) => (
-            <div key={index} className="day-section">
-              <h3>Day {day.day}</h3>
-              <ul>
-                {day.activities.map((activity, idx) => (
-                  <li key={idx} className="activity-item">
-                    <strong>{activity.time}</strong> - {activity.activity}
-                    <p>{activity.details}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <Slider {...sliderSettings}>
+            {days.map((day, index) => (
+              <div key={index} className="day-card">
+                <h3>Day {day.day}</h3>
+                <ul>
+                  {day.activities.map((activity, idx) => (
+                    <li key={idx} className="activity-item">
+                      <strong>{activity.time}</strong> - {activity.activity}
+                      <p>{activity.details}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </Slider>
+          
         <h3>Weather Forecast & Packing Tips during your trip</h3>
         {
         <div className="day-section">
@@ -161,6 +186,7 @@ const ItineraryPage = () => {
                 <p>Departure: {flight.departure}</p>
                 <p>Arrival: {flight.arrival}</p>
                 <p>{flight.details}</p>
+                <button className="add-to-cart-btn">Add to Cart</button>
                 </div>
             ))
             ) : (
@@ -173,23 +199,25 @@ const ItineraryPage = () => {
             <p>Loading hotels...</p>
           ) : hotels.length > 0 ? (
             <div className="hotel-cards-container">
-            {hotels.map((hotel, index) => (
-                <div key={index} className="hotel-card">
-                <img
-                    src={hotel.image}
-                    alt={`Image of ${hotel.name}`}
-                    className="hotel-image"
-                />
-                <div className="hotel-content">
-                    <h4 className="hotel-title">{hotel.name}</h4>
-                    <p className="hotel-description">{hotel.details}</p>
-                    <p className="hotel-price">
-                    Price:₹ <span>{hotel.price}</span> / night
-                    </p>
-                </div>
+    {hotels.map((hotel, index) => (
+        <div key={index} className="hotel-card">
+                    <img
+                        src={hotel.image}
+                        alt={`Image of ${hotel.name}`}
+                        className="hotel-image"
+                    />
+                    <div className="hotel-content">
+                        <h4 className="hotel-title">{hotel.name}</h4>
+                        <p className="hotel-description">{hotel.details}</p>
+                        <p className="hotel-price">
+                            Price: ₹ <span>{hotel.price}</span> / night
+                        </p>
+                        <button className="add-to-cart-btn">Add to Cart</button>
+                    </div>
                 </div>
             ))}
-            </div>
+        </div>
+
           ) : (
             <p>No hotel details available.</p>
           )}
