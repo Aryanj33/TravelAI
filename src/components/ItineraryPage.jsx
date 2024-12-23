@@ -16,7 +16,7 @@ const ItineraryPage = () => {
   }
 
   const itineraryData = JSON.parse(tempData);
-  const { title, days, flights } = itineraryData;
+  const { title, days, flights, weather } = itineraryData;
 
   const [hotels, setHotels] = useState([]);
   const [loadingHotels, setLoadingHotels] = useState(false);
@@ -66,14 +66,15 @@ const ItineraryPage = () => {
     try {
       const response = await fetch(url, options);
       const result = await response.json();
-      console.log(result);
       const extractedHotels = (result?.data?.hotels || []).slice(0, 6).map((hotel) => {
         const photoTemplate = hotel.cardPhotos?.[0]?.sizes?.urlTemplate;
         const photoUrl = photoTemplate ? photoTemplate.replace('{width}', 200).replace('{height}', 200) : 'https://via.placeholder.com/400x300';
-        
+        const usdPrice = hotel.commerceInfo?.priceForDisplay?.string || "N/A";
+        const price = parseFloat(usdPrice.replace(/[^0-9.]/g, ""));  // Extract numeric value
+        const inrPrice = price*85;  // Convert to INR
         return {
           name: hotel.cardTitle?.string || 'N/A',
-          price: hotel.commerceInfo?.priceForDisplay?.string || 'N/A',
+          price: inrPrice,
           details: hotel.descriptiveText || 'No description available.',
           image: photoUrl
         };
@@ -138,16 +139,34 @@ const ItineraryPage = () => {
               </ul>
             </div>
           ))}
+        <h3>Weather Forecast & Packing Tips during your trip</h3>
+        {
+        <div className="day-section">
+            <p className="activity-item"><strong>Average Temperature:</strong> {weather?.avgTemp || 'N/A'}°C</p>
+            <p className="activity-item"><strong>Condition:</strong> {weather?.condition || 'N/A'}</p>
+            <p className="activity-item"><strong>Sun Exposure:</strong> {weather?.sunExposure || 'Moderate'}</p>
+            <p className="activity-item"><strong>Rain Probability:</strong> {weather?.rainChance || 'N/A'}%</p>
+            <p className="activity-item"><strong>Wind:</strong> {weather?.wind || 'N/A'} km/h</p>
+            <p className="activity-item"><strong>Humidity:</strong> {weather?.humidity || 'N/A'}%</p>
+            <p className="activity-item"><strong>Humidity:</strong> {weather?.uvIndex || 'N/A'}%</p>
+            <p className="activity-item"><strong>Packing Tips:</strong> {weather?.packingTips || 'Pack light, bring sunscreen and a hat.'}</p>
+        </div>
+        }
 
-          <h3>Flight Details</h3>
-          {flights.map((flight, index) => (
-            <div key={index} className="flight-section">
-              <h4><strong>{flight.airline}</strong> - Flight {flight.flightNumber}</h4>
-              <p>Departure: {flight.departure}</p>
-              <p>Arrival: {flight.arrival}</p>
-              <p>{flight.details}</p>
-            </div>
-          ))}
+            <h3>Flight Details</h3>
+            {flights.length > 0 ? (
+            flights.map((flight, index) => (
+                <div key={index} className="flight-section">
+                <h4><strong>{flight.airline}</strong> - Flight {flight.flightNumber}</h4>
+                <p>Departure: {flight.departure}</p>
+                <p>Arrival: {flight.arrival}</p>
+                <p>{flight.details}</p>
+                </div>
+            ))
+            ) : (
+            <p>No flights available</p>
+            )}
+
 
           <h3>Hotel Details</h3>
           {loadingHotels ? (
@@ -165,7 +184,7 @@ const ItineraryPage = () => {
                     <h4 className="hotel-title">{hotel.name}</h4>
                     <p className="hotel-description">{hotel.details}</p>
                     <p className="hotel-price">
-                    Price: <span>{hotel.price}</span> / night
+                    Price:₹ <span>{hotel.price}</span> / night
                     </p>
                 </div>
                 </div>
