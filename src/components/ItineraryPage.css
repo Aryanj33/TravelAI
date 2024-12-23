@@ -314,16 +314,16 @@
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-  .hotel-section, .flight-section, .weather-section {
+  .hotel-section, .flight-section {
     padding: 1rem;
     margin-bottom: 1rem;
   }
 
-  .hotel-section h4, .flight-section h4, .weather-section h4 {
+  .hotel-section h4, .flight-section h4 {
     font-size: 1.8rem;
   }
 
-  .hotel-section p, .flight-section p, .weather-section p {
+  .hotel-section p, .flight-section p {
     font-size: 1.4rem;
   }
 }
