@@ -27,7 +27,7 @@ const ItineraryPage = () => {
     const optionsGeoId = {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': '13aabcd016mshd15c47bf8a14d71p10f2dejsn583a12c514c7',
+        'x-rapidapi-key': 'f754aec9aemsh03cf4475028b52ep10de59jsn05f87da892f9',
         'x-rapidapi-host': 'tripadvisor-com1.p.rapidapi.com',
       },
     };
@@ -58,7 +58,7 @@ const ItineraryPage = () => {
     const options = {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': '13aabcd016mshd15c47bf8a14d71p10f2dejsn583a12c514c7',
+        'x-rapidapi-key': 'f754aec9aemsh03cf4475028b52ep10de59jsn05f87da892f9',
         'x-rapidapi-host': 'tripadvisor-com1.p.rapidapi.com',
       },
     };
@@ -66,11 +66,19 @@ const ItineraryPage = () => {
     try {
       const response = await fetch(url, options);
       const result = await response.json();
-      const extractedHotels = (result?.data?.hotels || []).slice(0, 5).map((hotel) => ({
-        name: hotel.cardTitle?.string || 'N/A',
-        price: hotel.commerceInfo?.priceForDisplay?.string || 'N/A',
-        details: hotel.descriptiveText || 'No description available.',
-      }));
+      console.log(result);
+      const extractedHotels = (result?.data?.hotels || []).slice(0, 6).map((hotel) => {
+        const photoTemplate = hotel.cardPhotos?.[0]?.sizes?.urlTemplate;
+        const photoUrl = photoTemplate ? photoTemplate.replace('{width}', 200).replace('{height}', 200) : 'https://via.placeholder.com/400x300';
+        
+        return {
+          name: hotel.cardTitle?.string || 'N/A',
+          price: hotel.commerceInfo?.priceForDisplay?.string || 'N/A',
+          details: hotel.descriptiveText || 'No description available.',
+          image: photoUrl
+        };
+      });
+      
       setHotels(extractedHotels);
       console.log(extractedHotels);
     } catch (error) {
@@ -146,22 +154,22 @@ const ItineraryPage = () => {
             <p>Loading hotels...</p>
           ) : hotels.length > 0 ? (
             <div className="hotel-cards-container">
-              {hotels.map((hotel, index) => (
+            {hotels.map((hotel, index) => (
                 <div key={index} className="hotel-card">
-                  <img
-                    src="https://via.placeholder.com/150"
+                <img
+                    src={hotel.image}
                     alt={`Image of ${hotel.name}`}
                     className="hotel-image"
-                  />
-                  <div className="hotel-content">
+                />
+                <div className="hotel-content">
                     <h4 className="hotel-title">{hotel.name}</h4>
                     <p className="hotel-description">{hotel.details}</p>
                     <p className="hotel-price">
-                      Price: <span>{hotel.price}</span> / night
+                    Price: <span>{hotel.price}</span> / night
                     </p>
-                  </div>
                 </div>
-              ))}
+                </div>
+            ))}
             </div>
           ) : (
             <p>No hotel details available.</p>
