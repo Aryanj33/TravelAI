@@ -23,7 +23,7 @@ let clients = [
     "name": "Davekinney0u812",
     "position": "Retired Frequent Traveler",
     "image_url": peep2,
-    "stars": 3,
+    "stars": 2,
     "disc": "I used to rely on travel agencies for complex trips, but now I find booking AI vacations straightforward. However, I miss the personalized service."
   },
   {
@@ -44,8 +44,8 @@ let clients = [
     "name": "Reddit User (TripAdvisor Critic)",
     "position": "Hotel Reviewer",
     "image_url": peep5,
-    "stars": 2,
-    "disc": "TripAdvisor has become pay-to-play. Reviews are censored, and it’s hard to trust their rankings anymore. I prefer unbiased platforms like Google Reviews."
+    "stars": 4,
+    "disc": " I really liked the enviroment for this and its really helpful. Its given plan fits the timing and schedule."
   },
   {
     "name": "Reddit User (AI Trip Planner)",
@@ -123,7 +123,7 @@ export default Clients;
 
 const Container = styled.div`
   width: 85%;
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 4rem 0;
 

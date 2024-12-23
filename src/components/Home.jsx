@@ -20,10 +20,10 @@ const ExpenditureSlider = () => {
   return (
     <div className="expenditure-slider-container">
     <h2>Set Your Expenditure</h2>
-    <div>Selected Amount: <b>${expenditure}</b></div>
+    <div>Selected Amount: <b>₹{expenditure}</b></div>
     <input
       type="range"
-      min="100"
+      min="1000"
       max="100000"
       step="1000"
       value={expenditure}
@@ -68,7 +68,7 @@ const Home = () => {
   };
 
   const handlePlanItineraryClick = async () => {
-    const { from, to, departure, return: returnDate } = formData;
+    const { from, to, departure, return: returnDate, travelPartner, purposeOfVisit } = formData;
     const endDate = returnDate || "N/A";  // Default to "N/A" if empty or undefined
     
     if (!(from && to && departure && endDate)) {
@@ -85,15 +85,18 @@ const Home = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
-          prompt: `Plan a detailed travel itinerary for the following:
+          prompt: `Plan a detailed travel itinerary for the following, be sure to include daily activities, weather and flight details:
 
                     - Destination: ${to}
                     - Departure city: ${from}
                     - Travel dates: ${departure} to ${endDate}
+                    - number of people: ${travelPartner}
+                    - purpose of visit: ${purposeOfVisit}
 
                     ### Requirements:
                     1. *Itinerary Overview*:
                     - Title for the trip (e.g., "Trip to Paris").
+                    - type of trip, alone with purpose of visit
 
                     2. *Daily Plan*:
                     - For each day, provide:
@@ -114,11 +117,22 @@ const Home = () => {
                         - Additional details.
                         - price est
 
+                    4. *Weather Details*:
+                    - Include weather information with:
+                        - Average Temperature.
+                        - Condition (e.g., sunny, cloudy, etc.).
+                        - Sun Exposure (e.g., high, moderate, low).
+                        - Rain Probability (percentage chance of rain).
+                        - Wind Speed (in km/h).
+                        - Humidity (percentage).
+                        - UV Index.
+                        - Packing Tips (suggestions based on the weather).
+
                     ### Response Format:
                     Respond as a *valid JSON object* with this exact schema:
 
                     {
-                    "title": "Trip Title",
+                    "title": "Trip Title, purpose of visit and type of group",
                     "days": [
                         {
                         "day": 1,
@@ -142,7 +156,17 @@ const Home = () => {
                         "details": "Non-stop; 2 checked bags included."
                         },
                         ...
-                    ]
+                    ], 
+                    "weather": {
+                        "avgTemp": Average Temperature.
+                        "condition": Condition (e.g., sunny, cloudy, etc.).
+                        "sunExposure": Sun Exposure (e.g., high, moderate, low).
+                        "rainChance": Rain Probability (percentage chance of rain).
+                        "wind": Wind Speed (in km/h).
+                        "humidity": Humidity (percentage).
+                        "uvIndex": UV Index.
+                        "packingTips": Packing Tips (suggestions based on the weather).
+                        }
                     }
 
                     ### Notes:
