@@ -19,6 +19,7 @@ const ItineraryPage = () => {
   }
 
   const itineraryData = JSON.parse(tempData);
+  console.log(itineraryData);
   const { title, days, flights, weather } = itineraryData;
 
   const [hotels, setHotels] = useState([]);
@@ -30,7 +31,7 @@ const ItineraryPage = () => {
     const optionsGeoId = {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': '45ab2aae48msh8a0dd7519ac5120p12c1edjsnb72aac151f37',
+        'x-rapidapi-key': 'fb8385391emsh9568d473468e6e4p142358jsn0bde324cb465',
         'x-rapidapi-host': 'tripadvisor-com1.p.rapidapi.com',
       },
     };
@@ -61,7 +62,7 @@ const ItineraryPage = () => {
     const options = {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': '45ab2aae48msh8a0dd7519ac5120p12c1edjsnb72aac151f37',
+        'x-rapidapi-key': 'fb8385391emsh9568d473468e6e4p142358jsn0bde324cb465',
         'x-rapidapi-host': 'tripadvisor-com1.p.rapidapi.com',
       },
     };
@@ -163,17 +164,17 @@ const ItineraryPage = () => {
               </div>
             ))}
           </Slider>
-          
+        <br/><br/>
         <h3>Weather Forecast & Packing Tips during your trip</h3>
         {
         <div className="day-section">
-            <p className="activity-item"><strong>Average Temperature:</strong> {weather?.avgTemp || 'N/A'}°C</p>
+            <p className="activity-item"><strong>Average Temperature:</strong> {weather?.avgTemp || 'N/A'}</p>
             <p className="activity-item"><strong>Condition:</strong> {weather?.condition || 'N/A'}</p>
             <p className="activity-item"><strong>Sun Exposure:</strong> {weather?.sunExposure || 'Moderate'}</p>
-            <p className="activity-item"><strong>Rain Probability:</strong> {weather?.rainChance || 'N/A'}%</p>
-            <p className="activity-item"><strong>Wind:</strong> {weather?.wind || 'N/A'} km/h</p>
-            <p className="activity-item"><strong>Humidity:</strong> {weather?.humidity || 'N/A'}%</p>
-            <p className="activity-item"><strong>Humidity:</strong> {weather?.uvIndex || 'N/A'}%</p>
+            <p className="activity-item"><strong>Rain Probability:</strong> {weather?.rainChance || 'N/A'}</p>
+            <p className="activity-item"><strong>Wind:</strong> {weather?.wind || 'N/A'}</p>
+            <p className="activity-item"><strong>Humidity:</strong> {weather?.humidity || 'N/A'}</p>
+            <p className="activity-item"><strong>UV INDEX:</strong> {weather?.uvIndex || 'N/A'}%</p>
             <p className="activity-item"><strong>Packing Tips:</strong> {weather?.packingTips || 'Pack light, bring sunscreen and a hat.'}</p>
         </div>
         }

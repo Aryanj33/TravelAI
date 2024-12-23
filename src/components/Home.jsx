@@ -19,7 +19,7 @@ const ExpenditureSlider = () => {
 
   return (
     <div className="expenditure-slider-container">
-    <h2>Set Your Expenditure</h2>
+    <h2>Budget</h2>
     <div>Selected Amount: <b>₹{expenditure}</b></div>
     <input
       type="range"
