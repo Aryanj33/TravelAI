@@ -73,3 +73,4 @@ storybook-static/
 .expo/
 *.expo
 *.expo-shared
+backend/instance/users.db
