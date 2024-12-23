@@ -106,8 +106,7 @@ const TopDestinations = () => {
             </div>
           ))}
         </div>
-        <button className="prev-btn" onClick={prevSlide}>&#10094;</button>
-        <button className="next-btn" onClick={nextSlide}>&#10095;</button>
+       
       </div>
     </section>
   );

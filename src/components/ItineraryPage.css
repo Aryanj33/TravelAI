@@ -13,16 +13,18 @@
     top: 0;
     left: 0;
     width: 100%; /* Ensures the navbar spans the full width */
-    background-color: rgba(17, 28, 44, 0.7); /* Slight transparency for a modern look */
+    background-color: rgba(54, 61, 100, 0.444); /* Slight transparency for a modern look */
     backdrop-filter: blur(10px); /* Adds a blur effect for a glassy look */
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Matches sidebar shadow */
- 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.022);
+    transition: background-color 0.3s ease;
     padding: 0.7rem 2.2rem;
     color: white;
     z-index: 1000; /* Ensures the navbar is above other elements */
     /* max-height: 70px; */
 }
-
+.navbar.scrolled {
+  background-color: #2c3e50;
+}
 /* Logo Section */
 .logo {
     display: flex;
@@ -42,7 +44,7 @@
     padding-left: 1px;
     font-size: 2.2rem;
     font-family: Georgia, 'Times New Roman', Times, serif;
-    color: white; /* Matches the hover color for consistency */
+    color: rgb(39, 33, 69); /* Matches the hover color for consistency */
 }
 
 /* Navbar Links */
@@ -58,15 +60,15 @@
 
 .navbar ul li a {
     text-decoration: none;
-    color: white;
+    color: rgb(39, 33, 69);
     transition: all 0.3s ease-in-out;
     font-weight: bold;
-    padding: 0.3rem 0.9rem; /* Adds spacing for clickable area */
+    padding: 0.4rem 1rem; /* Adds spacing for clickable area */
     border-radius: 5px;
 }
 
 .navbar ul li a:hover {
-    color: #f4a261;
+    color: #135ec0;
     background-color: rgba(255, 255, 255, 0.2); /* Adds a hover background effect */
 }
 
@@ -105,7 +107,7 @@
   /* Sidebar Styles */
   .sidebar {
     width: 300px; /* Increased width */
-    margin-top: 60px;
+    margin-top: 70px;
     background-color: #2c3e50;
     color: white;
     padding: 1rem; /* Increased padding */
@@ -135,31 +137,42 @@
     transition: background-color 0.3s ease;
   }
   
+  .sidebar nav ul li a i {
+    margin-right: 10px;
+  }
+  
   .sidebar nav ul li a:hover {
     background-color: rgba(255, 255, 255, 0.2);
   }
   
   /* Main Content */
   .main-content {
-    margin-top: 45px;
+    margin-top: 40px;
     margin-left: 300px; /* Matches the sidebar width */
     padding: 3rem; /* Increased padding */
     flex: 1;
     overflow-y: auto;
+    
   }
   
   .main-content h2 {
-    margin-top: 3rem;
-    font-size: 2.5rem; /* Increased font size */
+    margin-top: 2.6rem;
+    font-size: 2.8rem; /* Increased font size */
     color: #2c3e50;
     margin-bottom: 5px;
   }
+  .main-content h3 {
+    /* margin-top: 3rem; */
+    font-size: 2rem; /* Increased font size */
+    color: #08325cef;
+    /* margin-bottom: 5px; */
+  }
   
   .main-content p {
-    margin: 0.75rem 0 2rem;
-    line-height: 1.8; /* Increased line height for better readability */
+    margin: 0.55rem 0 1rem;
+    line-height: 1.6; /* Increased line height for better readability */
     color: #555;
-    font-size: 1.5rem; /* Increased font size */
+    font-size: 1.6rem; /* Increased font size */
     margin-bottom: 12px;
   }
   
@@ -169,13 +182,13 @@
   }
   
   .itinerary-details ul li {
-    margin: 0.75rem 0; /* Increased spacing between items */
+    margin: 0.55rem 0; /* Increased spacing between items */
     padding: 1.2rem; /* Increased padding */
     background-color: #ecf0f1;
     border-left: 6px solid #3498db; /* Increased border thickness */
     border-radius: 5px;
     color: #2c3e50;
-    font-size: 2rem; /* Increased font size */
+    font-size: 2.5rem; /* Increased font size */
   }
   
   .itinerary-details ul li strong {
@@ -184,9 +197,8 @@
   
   /* Responsive Design */
   @media screen and (max-width: 768px) {
-    .sidebar {
-      width: 250px; /* Adjusted width for medium screens */
-    }
+   
+    
   
     .main-content {
       margin-left: 250px;
@@ -195,17 +207,22 @@
   }
   
   @media screen and (max-width: 480px) {
-    .sidebar {
-      width: 100%;
-      position: static;
-      height: auto;
-    }
-  
     .main-content {
       margin-left: 0;
       padding: 1.5rem; /* Adjusted padding */
     }
-  
+    @media (max-width: 768px) {
+      .sidebar {
+        position: absolute;
+        left: -300px;
+        transition: left 0.3s ease;
+      }
+    
+      .sidebar.active {
+        left: 0;
+      }
+    }
+    
    
     .sidebar nav ul {
       display: flex;
@@ -218,7 +235,7 @@
     }
   }
   .day-section, .hotel-section, .flight-section {
-  margin: 20px 0;
+  margin: 15px 0;
   padding: 15px;
   background-color: #f9f9f9;
   border-left: 5px solid #007bff;
@@ -226,15 +243,87 @@
 }
 
 .day-section h3, .hotel-section p, .flight-section p {
-  margin: 10px 0;
+  /* margin: 10px 0; */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    /* padding: rem; */
+  
 }
 
 .activity-item strong {
-  color: #2c3e50;
-  font-size: 1.1em;
+  color: #100752;
+  font-size: 1.2rem;
 }
 
 .activity-item p {
   margin: 5px 0;
   color: #555;
+  font-size: 1.4rem;
+}
+.activity-item {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.activity-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+.activity-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.activity-item {
+  animation: fadeIn 0.5s ease-in-out;
+}
+.hotel-section:hover, .flight-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Hotel and Flight Titles */
+.hotel-section h4, .flight-section h4 {
+  font-size: 1.7rem;
+  color: #1a4781;
+  margin-bottom: 0.5rem;
+}
+
+/* Item Details */
+.hotel-section p, .flight-section p {
+  font-size: 1.6rem;
+  color: #555;
+  margin: 0.5resection
+}
+
+.hotel-section p strong, .flight-section p strong {
+  color: #2c3e50;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .hotel-section, .flight-section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .hotel-section h4, .flight-section h4 {
+    font-size: 1.8rem;
+  }
+
+  .hotel-section p, .flight-section p {
+    font-size: 1.4rem;
+  }
 }

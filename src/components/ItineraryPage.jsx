@@ -67,7 +67,7 @@ const ItineraryPage = () => {
           <h3>Hotel Details</h3>
           {hotels.map((hotel, index) => (
             <div key={index} className="hotel-section">
-              <p><strong>{hotel.name}</strong></p>
+              <h4><strong>{hotel.name}</strong></h4>
               <p>Check-in: {hotel.checkin}</p>
               <p>Check-out: {hotel.checkout}</p>
               <p>{hotel.details}</p>
@@ -77,7 +77,7 @@ const ItineraryPage = () => {
           <h3>Flight Details</h3>
           {flights.map((flight, index) => (
             <div key={index} className="flight-section">
-              <p><strong>{flight.airline}</strong> - Flight {flight.flightNumber}</p>
+              <h4><strong>{flight.airline}</strong> - Flight {flight.flightNumber}</h4>
               <p>Departure: {flight.departure}</p>
               <p>Arrival: {flight.arrival}</p>
               <p>{flight.details}</p>
