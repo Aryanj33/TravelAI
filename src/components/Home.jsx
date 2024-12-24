@@ -287,6 +287,7 @@ const Home = () => {
                   <option value="Solo">Solo</option>
                   <option value="Couple">Couple</option>
                   <option value="Family">Family</option>
+                  <option value="Friends">Friends</option>
                   <option value="Other">Other</option>
                 </select>
               </div>

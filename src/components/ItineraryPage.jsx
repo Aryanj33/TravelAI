@@ -100,7 +100,7 @@ const ItineraryPage = () => {
       if (typeof newData === 'string') {
           try {
               const finalData = JSON.parse(newData);
-              console.log(finalData);  // This should now be an object
+              console.log(finalData);   
           } catch (error) {
               console.error("Error parsing JSON:", error);
           }
@@ -124,7 +124,7 @@ const ItineraryPage = () => {
     const optionsGeoId = {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': '1786cdd64amsh13b957631cdacbep1a686ajsn52eef2f02006',
+        'x-rapidapi-key': '1aa8d5a85fmsh49bf831688d39eap140a3bjsnb320cd7ef8eb',
         'x-rapidapi-host': 'tripadvisor-com1.p.rapidapi.com',
       },
     };
@@ -138,31 +138,30 @@ const ItineraryPage = () => {
       return null;
     }
   };
-
-  // add to cart
   const addToCart = (item) => {
-    const alreadyInCart = cart.some((cartItem) => cartItem.name === item.name);
-
-    if (alreadyInCart) {
-      setCart(cart.filter((cartItem) => cartItem.name !== item.name));
-      if (item.type === 'hotel') {
-        setSelectedHotel(null);
+    setCart((prevCart) => {
+      // Check if an item of the same type is already in the cart
+      const isSameType = (cartItem) => cartItem.type === item.type;
+  
+      if (prevCart.some(isSameType)) {
+        // Replace the existing item of the same type
+        return prevCart.map((cartItem) =>
+          isSameType(cartItem) ? item : cartItem
+        );
       }
-    } else {
-      if (item.type === 'hotel') {
-        setSelectedHotel(item.name);
-        setCart((prevCart) => [...prevCart.filter((cartItem) => cartItem.type !== 'hotel'), item]);
-      } else {
-        setCart((prevCart) => [...prevCart, item]);
-      }
-    }
+  
+      // Add the new item to the cart if no similar type exists
+      return [...prevCart, item];
+    });
+  };
+  
+  const removeFromCart = (itemName) => {
+    setCart((prevCart) => prevCart.filter((cartItem) => cartItem.name !== itemName));
   };
 
-  // calculate total 
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + item.price, 0);
   };
-
   // Fetch Hotels
   const fetchHotels = async (place) => {
     setLoadingHotels(true);
@@ -179,7 +178,7 @@ const ItineraryPage = () => {
     const options = {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': '1786cdd64amsh13b957631cdacbep1a686ajsn52eef2f02006',
+        'x-rapidapi-key': '1aa8d5a85fmsh49bf831688d39eap140a3bjsnb320cd7ef8eb',
         'x-rapidapi-host': 'tripadvisor-com1.p.rapidapi.com',
       },
     };
@@ -360,12 +359,13 @@ const ItineraryPage = () => {
                         Price: ₹ <span>{hotel.price}</span> / night
                     </p>
                     <p>Rating: {renderStars(hotel.numStars)}</p>
-                    <button className="add-to-cart-btn"
-                    onClick={() => addToCart(hotel)}
-                    disabled={selectedHotel && selectedHotel !== hotel.name}
-                  >
-                    {selectedHotel === hotel.name ? 'Remove from Cart' : 'Add to Cart'}
-                  </button>                    
+                    <button
+                        className={`add-to-cart-btn ${cart.some((item) => item.name === hotel.name) ? "in-cart" : ""}`}
+                               onClick={() => addToCart(hotel)}
+                                     >
+                     {cart.some((item) => item.name === hotel.name) ? "Remove from Cart" : "Add to Cart"}
+                         </button>
+                  
                   </div>
                 </div>
                 );
@@ -379,47 +379,47 @@ const ItineraryPage = () => {
       {/* Modal */}
       {showModal && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="cart  ">
             <h2>Your Cart</h2>
-            {cart.length > 0 ? (
-              <div>
-                {cart.map((item, idx) => (
-                  <div key={idx} className="cart-item">
-                    <p>{item.name} - ₹{item.price}</p>
-                  </div>
-                ))}
-                <hr />
-                <h3>Total: ₹{calculateTotal()}</h3>
+            <ul class="cart-items">
+            <li class="cart-item">
+            {cart.map((item) => (
+              <div class="item-details" key={item.name}>
+                <p>{item.name}</p>
+                <p><strong>{item.airline}</strong> - Flight {item.flightNumber}</p>
+                <p>₹{item.price}</p>
+                <button  class="remove-item" onClick={() => removeFromCart(item.name)}>Remove</button>
               </div>
-            ) : (
-              <p>Your cart is empty</p>
-            )}
-            <button onClick={() => setShowModal(false)}>Close</button>
+            ))}
+            </li>
+            </ul>
+            <h3>Total: ₹{calculateTotal()}</h3>
+            <button  class="checkout"  onClick={() => setShowModal(false)}>Close</button>
           </div>
         </div>
       )}
-      {/* Edit Plan Modal */}
-      {editModal && (
-        <div className="modal">
+       {editModal && (
+        <div className="modals">
           <div className="modal-content">
             <h2>Edit Your Plan</h2>
             <textarea
+             className="modal-textarea"
               placeholder="Enter your modifications..."
               value={editPrompt}
               onChange={(e) => setEditPrompt(e.target.value)}
               rows="5"
             ></textarea>
             <div className="modal-actions">
-              <button onClick={handleEditSubmit} disabled={loadingEdit}>
+              <button className="modal-btn update-btn" onClick={handleEditSubmit} disabled={loadingEdit}>
                 {loadingEdit ? "Updating..." : "Update Plan"}
               </button>
-              <button onClick={() => setEditModal(false)}>Cancel</button>
+              <button className="modal-btn cancel-btn" onClick={() => setEditModal(false)}>Cancel</button>
             </div>
           </div>
         </div>
-      )}
+       )}
     </div>
   );
 };
-
+    
 export default ItineraryPage;
