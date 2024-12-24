@@ -385,7 +385,12 @@ const Home = () => {
             <div className="search-btn">
               <button onClick={handlePlanItineraryClick}>Plan Itinerary</button>
             </div>
-          </div>
+            </div>
+            <div  className="search-btn">
+                
+            <button className="journey-btn">Create your Journey with us</button>
+              </div>
+          
 
           <section id="features" className="features">
             <div className="container">

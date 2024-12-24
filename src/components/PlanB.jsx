@@ -211,8 +211,8 @@ const PlanB = () => {
           }}
         >
           <section className="hero">
-            <h2>Plan Your Journey</h2>
-            <p><b>Create a personalized travel itinerary for any location around the world!</b></p>
+            <h2>Get Ready For An Adventure</h2>
+            <p><b>Create a personalized travel itinerary for a suprise location around you!!!</b></p>
           </section>
           
           {isLoading && (
