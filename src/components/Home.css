@@ -1000,3 +1000,26 @@ body {
         font-size: 1rem;
     }
 }
+
+.suggestions-dropdown {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff;
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+  }
+  
+  .suggestions-dropdown li {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .suggestions-dropdown li:hover {
+    background-color: #f0f0f0;
+  }
+  

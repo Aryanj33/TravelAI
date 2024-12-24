@@ -38,7 +38,9 @@ const Home = () => {
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false); // Loading state
-
+  const [suggestions, setSuggestions] = useState([]);
+  const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
+    
   const [formData, setFormData] = useState({
     from: '',
     to: '',
@@ -48,14 +50,46 @@ const Home = () => {
     purposeOfVisit: ''
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = async (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (name === 'from' || name === 'to') {
+      if (value.length > 2) {
+        fetchSuggestions(value);
+      } else {
+        setSuggestions([]); // Clear suggestions if input length is too short
+      }
+    }
+  };
+
+  const fetchSuggestions = async (input) => {
+    const url = `https://place-autocomplete1.p.rapidapi.com/autocomplete/json?input=${input}&radius=500`;
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-key': 'f754aec9aemsh03cf4475028b52ep10de59jsn05f87da892f9',
+        'x-rapidapi-host': 'place-autocomplete1.p.rapidapi.com',
+      },
+    };
+
+    try {
+      setIsLoadingSuggestions(true);
+      const response = await fetch(url, options);
+      const result = await response.json();
+      setSuggestions(result.predictions || []);
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+    } finally {
+      setIsLoadingSuggestions(false);
+    }
+  };
+
+  const handleSuggestionSelect = (field, suggestion) => {
+    setFormData({ ...formData, [field]: suggestion.description });
+    setSuggestions([]);
   };
   
-
-
-
   const handleSwap = () => {
     setFormData(prevState => ({
       from: prevState.to, 
@@ -247,29 +281,53 @@ const Home = () => {
             </div>
 
             <div className="search-fields">
-              <div className="field">
-                <label>From</label>
-                <input
-                  type="text"
-                  name="from"
-                  placeholder="Enter city or airport"
-                  value={formData.from}
-                  onChange={handleInputChange}
-                />
-              </div>
+            <div className="field">
+            <label>From</label>
+            <input
+                type="text"
+                name="from"
+                placeholder="Enter city or airport"
+                value={formData.from}
+                onChange={handleInputChange}
+            />
+            {formData.from && suggestions.length > 0 && (
+                <ul className="suggestions-dropdown">
+                {suggestions.map((suggestion) => (
+                    <li
+                    key={suggestion.place_id}
+                    onClick={() => handleSuggestionSelect('from', suggestion)}
+                    >
+                    {suggestion.description}
+                    </li>
+                ))}
+                </ul>
+            )}
+            </div>
               <span className="swap-btn" onClick={handleSwap}>
                 ⇄
               </span>
               <div className="field">
                 <label>To</label>
                 <input
-                  type="text"
-                  name="to"
-                  placeholder="Enter city or airport"
-                  value={formData.to}
-                  onChange={handleInputChange}
+                    type="text"
+                    name="to"
+                    placeholder="Enter city or airport"
+                    value={formData.to}
+                    onChange={handleInputChange}
                 />
-              </div>
+                {formData.to && suggestions.length > 0 && (
+                    <ul className="suggestions-dropdown">
+                    {suggestions.map((suggestion) => (
+                        <li
+                        key={suggestion.place_id}
+                        onClick={() => handleSuggestionSelect('to', suggestion)}
+                        >
+                        {suggestion.description}
+                        </li>
+                    ))}
+                    </ul>
+                )}
+                </div>
               <div className="field">
                 <label>Departure</label>
                 <input type="date" name="departure" value={formData.departure}
