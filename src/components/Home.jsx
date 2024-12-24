@@ -16,7 +16,7 @@ const ExpenditureSlider = () => {
   const handleSliderChange = (e) => {
     setExpenditure(e.target.value);
   };
-
+  
   return (
     <div className="expenditure-slider-container">
     <h2>Budget</h2>
