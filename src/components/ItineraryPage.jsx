@@ -42,54 +42,70 @@ const ItineraryPage = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          prompt: `you gave the following response: ${itineraryData}, the following additions are needed to the existing response: ${editPrompt}, 
-                    give the updated response in the following format:
-                    ### Response Format:
-                    Respond as a *valid JSON object* with this exact schema:
+          prompt: `### Task:  
+                    You are provided with an existing JSON itinerary object:  
+                    ${itineraryData}  
 
+                    Apply the following additions to the existing JSON:  
+                    ${editPrompt}  
+
+                    ### Key Instructions:  
+                    - **Do not regenerate the entire JSON.** Only apply edits to the relevant sections.  
+                    - **Preserve all existing fields, activities, and values.**  
+                    - Append new activities to the appropriate day without modifying or overwriting other activities.  
+                    - If the section doesn't exist, create it. Otherwise, extend the existing one.  
+                    - Return the complete JSON with updates applied but avoid resetting fields to null or empty unless explicitly requested.  
+
+                    }  
+
+                    Return the updated JSON in the exact format shown:  
+                    ### Response Format:  
+                    Respond as a *valid JSON object* that retains all existing data and incorporates the new edits. The schema must match the following:  
                     {
-                    "title": "Trip Title, purpose of visit and type of group",
-                    "days": [
-                        {
-                        "day": 1,
-                        "activities": [
+                        "title": "Trip Title, purpose of visit and type of group",
+                        "days": [
                             {
-                            "time": "9:00 AM",
-                            "activity": "Visit Eiffel Tower",
-                            "details": "Tickets included; duration 2 hours."
+                                "day": 1,
+                                "activities": [
+                                    {
+                                        "time": "time in hh::mm - am/pm",
+                                        "activity": "description",
+                                        "details": "important details about activity"
+                                    },
+                                    ...
+                                ]
                             },
                             ...
-                        ]
-                        },
-                        ...
-                    ],
-                    "flights": [
-                        {
-                        "airline": "Airline Name",
-                        "flightNumber": "Flight Number",
-                        "departure": "YYYY-MM-DDTHH:mm",
-                        "arrival": "YYYY-MM-DDTHH:mm",
-                        "price": in INR,
-                        "details": "Non-stop; 2 checked bags included."
-                        },
-                        ...
-                    ], 
-                    "weather": {
-                        "avgTemp": Average Temperature.
-                        "condition": Condition (e.g., sunny, cloudy, etc.).
-                        "sunExposure": Sun Exposure (e.g., high, moderate, low).
-                        "rainChance": Rain Probability (percentage chance of rain).
-                        "wind": Wind Speed (in km/h).
-                        "humidity": Humidity (percentage).
-                        "uvIndex": UV Index.
-                        "packingTips": Packing Tips (suggestions based on the weather).
+                        ],
+                        "flights": [
+                            {
+                                "airline": "Airline Name",
+                                "flightNumber": "Flight Number",
+                                "departure": "YYYY-MM-DDTHH:mm",
+                                "arrival": "YYYY-MM-DDTHH:mm",
+                                "price": in INR,
+                                "details": "Non-stop; 2 checked bags included."
+                            },
+                            ...
+                        ], 
+                        "weather": {
+                            "avgTemp": Average Temperature,
+                            "condition": Condition (e.g., sunny, cloudy, etc.),
+                            "sunExposure": Sun Exposure (e.g., high, moderate, low),
+                            "rainChance": Rain Probability (percentage chance of rain),
+                            "wind": Wind Speed (in km/h),
+                            "humidity": Humidity (percentage),
+                            "uvIndex": UV Index,
+                            "packingTips": Packing Tips (suggestions based on the weather)
                         }
-                    }
+                    }  
 
-                    ### Notes:
-                    - If data for any field is unavailable, return an empty array for that field.
-                    - Ensure the response adheres strictly to the JSON format without additional text or invalid keys.
-                    - Validate the response before sending.`
+                    ### Important Instructions:  
+                    - **Do not replace existing data**. Only modify or add to it where specified.  
+                    - If the addition does not apply to any field, skip that part and retain the current structure.  
+                    - Ensure that no null or empty fields are introduced unless explicitly instructed.  
+                    - Validate the JSON to ensure it is well-formed and matches the schema.  
+                    `
         }),
       });
 
@@ -139,21 +155,21 @@ const ItineraryPage = () => {
     }
   };
   const addToCart = (item) => {
-    setCart((prevCart) => {
-      // Check if an item of the same type is already in the cart
-      const isSameType = (cartItem) => cartItem.type === item.type;
-  
-      if (prevCart.some(isSameType)) {
-        // Replace the existing item of the same type
-        return prevCart.map((cartItem) =>
-          isSameType(cartItem) ? item : cartItem
-        );
+    const alreadyInCart = cart.some((cartItem) => cartItem.name === item.name);
+    if (alreadyInCart) {
+      setCart(cart.filter((cartItem) => cartItem.name !== item.name));
+      if (item.type === 'hotel') {
+        setSelectedHotel(null);
       }
-  
-      // Add the new item to the cart if no similar type exists
-      return [...prevCart, item];
-    });
-  };
+    } else {
+      if (item.type === 'hotel') {
+        setSelectedHotel(item.name);
+        setCart((prevCart) => [...prevCart.filter((cartItem) => cartItem.type !== 'hotel'), item]);
+      } else {
+        setCart((prevCart) => [...prevCart, item]);
+      }
+    }
+}
   
   const removeFromCart = (itemName) => {
     setCart((prevCart) => prevCart.filter((cartItem) => cartItem.name !== itemName));
@@ -214,10 +230,10 @@ const ItineraryPage = () => {
   };
 
   // Fetch hotels on component mount
+
   useEffect(() => {
     fetchHotels(destination);
   }, []);
-
   // Slider settings for react-slick
   const sliderSettings = {
     dots: true,
@@ -310,7 +326,16 @@ const ItineraryPage = () => {
                 <p>Arrival: {flight.arrival}</p>
                 <p>Price: {flight.price}</p>
                 <p>{flight.details}</p>
-                <button className="add-to-cart-btn" onClick={() => addToCart(flight)}>Add to Cart</button>
+                <button
+                className="add-to-cart-btn"
+                style={{
+                    backgroundColor: cart.some((item) => item.flightNumber === flight.flightNumber) ? "red" : "green",
+                    color: "white"  // Optional: To ensure contrast for readability
+                }}
+                onClick={() => addToCart(flight)}
+                >
+                {cart.some((item) => item.flightNumber === flight.flightNumber) ? "Remove from Cart" : "Add to Cart"}
+                </button>
                 </div>
             ))
           ) : (
@@ -360,12 +385,16 @@ const ItineraryPage = () => {
                     </p>
                     <p>Rating: {renderStars(hotel.numStars)}</p>
                     <button
-                        className={`add-to-cart-btn ${cart.some((item) => item.name === hotel.name) ? "in-cart" : ""}`}
-                               onClick={() => addToCart(hotel)}
-                                     >
-                     {cart.some((item) => item.name === hotel.name) ? "Remove from Cart" : "Add to Cart"}
-                         </button>
-                  
+                    className="add-to-cart-btn"
+                    style={{
+                        backgroundColor: cart.some((item) => item.name === hotel.name) ? "red" : "green",
+                        color: "white"  // Optional: To ensure contrast for readability
+                    }}
+                    onClick={() => addToCart(hotel)}
+                    >
+                    {cart.some((item) => item.name === hotel.name) ? "Remove from Cart" : "Add to Cart"}
+                    </button>
+
                   </div>
                 </div>
                 );
@@ -394,7 +423,9 @@ const ItineraryPage = () => {
             </li>
             </ul>
             <h3>Total: ₹{calculateTotal()}</h3>
-            <button  class="checkout"  onClick={() => setShowModal(false)}>Close</button>
+            <button  class="checkout"  onClick={() => setShowModal(false)}>Close</button><br/>
+            <br/>
+            <button  class="checkout">Check Out</button>
           </div>
         </div>
       )}
