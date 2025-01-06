@@ -1,7 +1,8 @@
 # TravelAi
-
-## Overview
 TravelAi is an intelligent travel planner that simplifies your travel planning process. It helps users by providing a detailed itinerary of a destination and offers seamless options to add hotels and flights to a personalized cart for easy reference and booking.
+
+
+
 
 ## Features
 - **Itinerary Generation**: Automatically generates a detailed itinerary for your chosen destination, keeping in mind your return and departure details.
