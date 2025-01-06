@@ -1011,12 +1011,13 @@ body {
     background: #fff;
     position: absolute;
     z-index: 1000;
-    width: 100%;
+    width: 25%;
   }
   
   .suggestions-dropdown li {
     padding: 10px;
     cursor: pointer;
+    width: 300px;
   }
   
   .suggestions-dropdown li:hover {

@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
@@ -6,7 +6,7 @@ import os
 import google.generativeai as genai
 
 # Initialize Flask app and database
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # Corrected path to the database
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -34,6 +34,10 @@ class User(db.Model):
 # Create tables if they don't exist
 with app.app_context():
     db.create_all()
+
+@app.route('/')
+def index():
+    return send_from_directory(app.static_folder, 'index.html')
 
 # Signup route
 @app.route('/signup', methods=['POST'])
