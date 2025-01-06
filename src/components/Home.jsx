@@ -9,6 +9,8 @@ import backkkgg from '../assets/backkkgg.webp';
 import { Link } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import PlanB from './PlanB'; // Import PlanB.jsx
+
 
 const ExpenditureSlider = () => {
   const [expenditure, setExpenditure] = useState(500);
@@ -40,7 +42,8 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [suggestions, setSuggestions] = useState([]);
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
-    
+  const [activeField, setActiveField] = React.useState(null);
+
   const [formData, setFormData] = useState({
     from: '',
     to: '',
@@ -53,7 +56,7 @@ const Home = () => {
   const handleInputChange = async (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-
+    setActiveField(name); 
     if (name === 'from' || name === 'to') {
       if (value.length > 2) {
         fetchSuggestions(value);
@@ -88,6 +91,7 @@ const Home = () => {
   const handleSuggestionSelect = (field, suggestion) => {
     setFormData({ ...formData, [field]: suggestion.description });
     setSuggestions([]);
+    setActiveField(null);
   };
   
   const handleSwap = () => {
@@ -290,44 +294,46 @@ const Home = () => {
                 value={formData.from}
                 onChange={handleInputChange}
             />
-            {formData.from && suggestions.length > 0 && (
+            {activeField === 'from' && suggestions.length > 0 && (
                 <ul className="suggestions-dropdown">
-                {suggestions.map((suggestion) => (
-                    <li
-                    key={suggestion.place_id}
-                    onClick={() => handleSuggestionSelect('from', suggestion)}
-                    >
-                    {suggestion.description}
-                    </li>
-                ))}
-                </ul>
-            )}
-            </div>
-              <span className="swap-btn" onClick={handleSwap}>
-                ⇄
-              </span>
-              <div className="field">
-                <label>To</label>
-                <input
-                    type="text"
-                    name="to"
-                    placeholder="Enter city or airport"
-                    value={formData.to}
-                    onChange={handleInputChange}
-                />
-                {formData.to && suggestions.length > 0 && (
-                    <ul className="suggestions-dropdown">
                     {suggestions.map((suggestion) => (
                         <li
-                        key={suggestion.place_id}
-                        onClick={() => handleSuggestionSelect('to', suggestion)}
+                            key={suggestion.place_id}
+                            onClick={() => handleSuggestionSelect('from', suggestion)}
                         >
-                        {suggestion.description}
+                            {suggestion.description}
                         </li>
                     ))}
-                    </ul>
-                )}
-                </div>
+                </ul>
+            )}
+        </div>
+
+        <span className="swap-btn" onClick={handleSwap}>
+            ⇄
+        </span>
+
+        <div className="field">
+            <label>To</label>
+            <input
+                type="text"
+                name="to"
+                placeholder="Enter city or airport"
+                value={formData.to}
+                onChange={handleInputChange}
+            />
+            {activeField === 'to' && suggestions.length > 0 && (
+                <ul className="suggestions-dropdown">
+                    {suggestions.map((suggestion) => (
+                        <li
+                            key={suggestion.place_id}
+                            onClick={() => handleSuggestionSelect('to', suggestion)}
+                        >
+                            {suggestion.description}
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
               <div className="field">
                 <label>Departure</label>
                 <input type="date" name="departure" value={formData.departure}
@@ -388,8 +394,12 @@ const Home = () => {
             </div>
             <div  className="search-btn">
                 
-            <button className="journey-btn">Create your Journey with us</button>
-              </div>
+            <Link to="/planb">
+            <button className="journey-btn">
+                Create your Journey with us
+            </button>
+            </Link>
+            </div>
           
 
           <section id="features" className="features">

@@ -140,7 +140,7 @@ const ItineraryPage = () => {
     const optionsGeoId = {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': '1aa8d5a85fmsh49bf831688d39eap140a3bjsnb320cd7ef8eb',
+        'x-rapidapi-key': '1d01adff47msh17836f50b21c0edp135e9cjsn828c516c9164',
         'x-rapidapi-host': 'tripadvisor-com1.p.rapidapi.com',
       },
     };
@@ -194,7 +194,7 @@ const ItineraryPage = () => {
     const options = {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': '1aa8d5a85fmsh49bf831688d39eap140a3bjsnb320cd7ef8eb',
+        'x-rapidapi-key': '1d01adff47msh17836f50b21c0edp135e9cjsn828c516c9164',
         'x-rapidapi-host': 'tripadvisor-com1.p.rapidapi.com',
       },
     };
